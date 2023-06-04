@@ -16,12 +16,15 @@ prod: ## Installs all production dependencies
 dev: ## Installs all dev dependencies
 	composer install
 
-test: ## Starts all Tests
-	php ./vendor/bin/phpunit --configuration=./phpunit.xml
+# ------------------------------------------------------------------------------------------------------------
+
+phpcheck: ## Starts the PHP syntax checks
+	@find . -name '*.php' -not -path "./vendor/*" -not -path "./tests/*" | xargs -n 1 -P4 php -l
 
 stan: ## Starts the PHPStan Analyser
 	php ./vendor/bin/phpstan --memory-limit=1G analyse .
 
+# ------------------------------------------------------------------------------------------------------------
 
 release: ## Builds a PROD version and creates a ZIP file in plugins/.build.
 	mkdir -p ./.build
