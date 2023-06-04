@@ -16,6 +16,9 @@ prod: ## Installs all production dependencies
 dev: ## Installs all dev dependencies
 	composer install
 
+clean: ## Clears all dependencies
+	rm -rf vendor/*
+
 # ------------------------------------------------------------------------------------------------------------
 
 phpcheck: ## Starts the PHP syntax checks
@@ -27,6 +30,8 @@ stan: ## Starts the PHPStan Analyser
 # ------------------------------------------------------------------------------------------------------------
 
 release: ## Builds a PROD version and creates a ZIP file in plugins/.build.
+	make clean
+	make prod
 	mkdir -p ./.build
 	rm -rf ./.build/AIDemoData.zip || true;
 	# -------------------------------------------------------------------------------------------------
