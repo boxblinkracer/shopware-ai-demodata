@@ -2,6 +2,11 @@
 
 This plugin is designed to generate demo data for Shopware 6 based on artificial intelligence (AI) technology. It allows you to quickly populate your Shopware 6 shop with sample data using AI-generated product information.
 
+<p align="center">
+   <img src="/.github/assets/shoes.png">
+</p>
+
+
 ## Installation
 
 ### ZIP Files
