@@ -123,7 +123,7 @@ class ProductGenerator
         $prompt .= 'description (about 400 characters)' . PHP_EOL;
         $prompt .= 'price value (no currency just number)' . PHP_EOL;
         $prompt .= PHP_EOL;
-        $prompt .= 'product number should be 20 unique random letters starting with AIDEMO.' . PHP_EOL;
+        $prompt .= 'product number should be 20 unique random letters.' . PHP_EOL;
         $prompt .= 'Please only create this number of products: ' . $count . PHP_EOL;
         $prompt .= 'The industry of the products should be: ' . $keywords;
 
