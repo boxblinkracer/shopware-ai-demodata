@@ -1,0 +1,41 @@
+{
+  "name": "boxblinkracer/shopware-ai-demodata",
+  "description": "AI Demo Data",
+  "version": "v1.0.0",
+  "type": "shopware-platform-plugin",
+  "license": "MIT",
+  "extra": {
+    "shopware-plugin-class": "AIDemoData\\AIDemoData",
+    "author": "Christian Dangl",
+    "label": {
+      "en-GB": "AI Demo Data"
+    }
+  },
+  "require": {
+    "php": ">= 8.1",
+    "orhanerday/open-ai": "^4.7"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest",
+    "shopware/core": "*",
+    "shopware/storefront": "*",
+    "phpunit/phpunit": "^10.2",
+    "phpstan/phpstan": "^1.10"
+  },
+  "autoload": {
+    "psr-4": {
+      "AIDemoData\\": "src/",
+      "Orhanerday\\OpenAi\\": "vendor/orhanerday/open-ai/src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AIDemoData\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "symfony/runtime": true
+    }
+  }
+}

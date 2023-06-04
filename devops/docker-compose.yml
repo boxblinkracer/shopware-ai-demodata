@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+
+  shop:
+    image: dockware/dev:6.5.1.1
+    container_name: shopware
+    volumes:
+      - "../:/var/www/html/custom/plugins/AIDemoData"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "3306:3306"
