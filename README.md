@@ -33,6 +33,12 @@ Log in to your Shopware 6 administration panel and navigate to Settings > System
 Search for "AI Demo Data" in the plugin list and navigate to the plugin's configuration page and enter your OpenAI API key.
 This key is required for the AI-generated demo data generation process.
 
+You can also provide your API key using a CLI command of Shopware:
+
+```ruby
+php bin/console system:config:set AIDemoData.config.apiKey 123
+```
+
 ## Usage
 
 Once the plugin is activated and configured with your OpenAI API key, you can use the command-line interface (CLI) to generate demo data.
@@ -43,10 +49,20 @@ To generate demo data, open your terminal, navigate to your Shopware 6 project's
 php bin/console ai-demo-data:generate --keywords='baseball gloves, right and left, leather, high quality' --count=2
 ```
 
-In this example, the **--keywords** option specifies the keywords or topics related to the desired demo data.
-You can play around with these values to generate different demo data and improve your results.
+### Options
 
-The **--count** option indicates the number of demo data entries to generate (default: 1).
+* **Keywords**:
+  In this example, the **--keywords** option specifies the keywords or topics related to the desired demo data.
+  You can play around with these values to generate different demo data and improve your results.
+
+* **Count**:
+  The **--count** option indicates the number of demo data entries to generate (default: 1).
+
+* **Category**:
+  The optional name of the category if you would like to automatically assign the generated demo data to a category in the Storefront.
+
+* **With Images**:
+  The **--with-images** option indicates whether the generated demo data should contain images (default: true).
 
 After running the command, the plugin will use the specified keywords and AI technology to generate demo data based on your Shopware 6 shop's
 configured product structure.

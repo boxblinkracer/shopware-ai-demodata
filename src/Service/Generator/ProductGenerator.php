@@ -55,6 +55,16 @@ class ProductGenerator
     private $imageUploader;
 
     /**
+     * @var ProductGeneratorInterface
+     */
+    private $callback;
+
+    /**
+     * @var bool
+     */
+    private $generateImages;
+
+    /**
      * @param Client $client
      * @param EntityRepository $repoProducts
      * @param TaxRepository $repoTaxes
@@ -72,16 +82,36 @@ class ProductGenerator
         $this->repoCurrency = $repoCurrency;
         $this->repoCategory = $repoCategory;
         $this->imageUploader = $imageUploader;
+
+        $this->generateImages = true;
+    }
+
+    /**
+     * @param ProductGeneratorInterface $callback
+     * @return void
+     */
+    public function setCallback(ProductGeneratorInterface $callback): void
+    {
+        $this->callback = $callback;
+    }
+
+    /**
+     * @param bool $generateImages
+     */
+    public function setGenerateImages(bool $generateImages): void
+    {
+        $this->generateImages = $generateImages;
     }
 
 
     /**
      * @param string $keywords
      * @param int $count
+     * @param string $category
      * @return void
      * @throws \Exception
      */
-    public function generate(string $keywords, int $count)
+    public function generate(string $keywords, int $count, string $category)
     {
         $prompt = 'Create a list of demo products with these properties, separated values with ";". Only write down values and no property names ' . PHP_EOL;
         $prompt .= PHP_EOL;
@@ -135,30 +165,33 @@ class ProductGenerator
                     $price = (float)$price;
                 }
 
-                $url = $this->client->generateImage($name . ' ' . $description);
-
-                $temp_file = tempnam(sys_get_temp_dir(), 'ai-product');
-
-                $ch = curl_init($url);
-                $fp = fopen($temp_file, 'wb');
-                curl_setopt($ch, CURLOPT_FILE, $fp);
-                curl_setopt($ch, CURLOPT_HEADER, 0);
-                curl_exec($ch);
-                curl_close($ch);
-                fclose($fp);
+                if ($this->generateImages) {
+                    $temp_file = $this->generateImage($name, $description);
+                } else {
+                    $temp_file = '';
+                }
 
                 $this->createProduct(
                     $id,
                     $name,
                     $number,
-                    '',
+                    $category,
                     $description,
                     $price,
                     $temp_file,
                     [],
                 );
+
+                if ($this->callback !== null) {
+                    $this->callback->onProductGenerated($name);
+                }
+
             } catch (\Exception $ex) {
-                echo $ex->getMessage() . PHP_EOL;
+
+                if ($this->callback !== null) {
+                    $this->callback->onProductGenerationFailed($ex->getMessage());
+                }
+
             }
         }
     }
@@ -183,17 +216,16 @@ class ProductGenerator
 
         $salesChannel = $this->repoSalesChannel->getStorefrontSalesChannel();
         $tax = $this->repoTaxes->getTaxEntity(19);
-        $category = $this->repoCategory->getByName('Clothing');
         $currency = $this->repoCurrency->getCurrencyEuro();
 
-        # we have to avoid duplicate images (shopware has a problem with it in media)
-        # so lets copy it for our id
+
         $imageSource = __DIR__ . '/../../Resources/files/product/default.png';
 
         if (!empty($image)) {
             $imageSource = $image;
         }
 
+        # we have to avoid duplicate images (shopware has a problem with it in media) so lets copy it for our id
         $imagePath = __DIR__ . '/../../Resources/files/' . $id . '_tmp.png';
         copy($imageSource, $imagePath);
 
@@ -223,11 +255,6 @@ class ProductGenerator
                     'visibility' => 30,
                 ]
             ],
-            'categories' => [
-                [
-                    'id' => $category->getId(),
-                ]
-            ],
             'stock' => 99,
             'price' => [
                 [
@@ -247,8 +274,15 @@ class ProductGenerator
             'customFields' => $customFields,
         ];
 
-#        var_dump($productData);
+        if (!empty($categoryName)) {
 
+            $category = $this->repoCategory->getByName($categoryName);
+            $productData['categories'] = [
+                [
+                    'id' => $category->getId(),
+                ]
+            ];
+        }
 
         $this->repoProducts->upsert(
             [
@@ -258,4 +292,26 @@ class ProductGenerator
         );
     }
 
+    /**
+     * @param string $productName
+     * @param string $productDescription
+     * @return string
+     * @throws \Exception
+     */
+    private function generateImage(string $productName, string $productDescription): string
+    {
+        $url = $this->client->generateImage($productName . ' ' . $productDescription);
+
+        $temp_file = tempnam(sys_get_temp_dir(), 'ai-product');
+
+        $ch = curl_init($url);
+        $fp = fopen($temp_file, 'wb');
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_exec($ch);
+        curl_close($ch);
+        fclose($fp);
+
+        return (string)$temp_file;
+    }
 }

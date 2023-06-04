@@ -4,13 +4,14 @@ namespace AIDemoData\Command;
 
 
 use AIDemoData\Service\Generator\ProductGenerator;
+use AIDemoData\Service\Generator\ProductGeneratorInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class GenerateCommand extends Command
+class GenerateCommand extends Command implements ProductGeneratorInterface
 {
 
     public static $defaultName = 'ai-demo-data:generate';
@@ -19,6 +20,20 @@ class GenerateCommand extends Command
      * @var ProductGenerator
      */
     private $productGenerator;
+
+    /**
+     * @var SymfonyStyle
+     */
+    private $io;
+
+    /**
+     * @var int
+     */
+    private $generatedCount = 0;
+    /**
+     * @var int
+     */
+    private $errorCount = 0;
 
 
     /**
@@ -40,8 +55,10 @@ class GenerateCommand extends Command
         $this
             ->setName((string)self::$defaultName)
             ->setDescription('Generator AI Demo data with the help of OpenAI.')
-            ->addOption('count', 'c', InputOption::VALUE_REQUIRED, 'Number of products to generate')
-            ->addOption('keywords', 'k', InputOption::VALUE_REQUIRED, 'Keywords to generate products for');
+            ->addOption('count', null, InputOption::VALUE_REQUIRED, 'Number of products to generate')
+            ->addOption('keywords', null, InputOption::VALUE_REQUIRED, 'Keywords to generate products for')
+            ->addOption('category', null, InputOption::VALUE_REQUIRED, 'The name of your category in the Storefront to append the products to.')
+            ->addOption('with-images', null, InputOption::VALUE_REQUIRED, 'Indicates if images should be generated for the products.');
     }
 
     /**
@@ -52,11 +69,13 @@ class GenerateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
-        $io->title('AI Demo Data Generator');
+        $this->io = new SymfonyStyle($input, $output);
+        $this->io->title('AI Demo Data Generator');
 
         $count = $input->getOption('count');
         $keyWords = $input->getOption('keywords');
+        $category = $input->getOption('category');
+        $withImages = $input->getOption('with-images');
 
         if ($count === false) {
             $count = 1;
@@ -66,9 +85,59 @@ class GenerateCommand extends Command
             throw new \Exception('No keywords given.');
         }
 
+        if ($category === null) {
+            $category = '';
+        }
 
-        $this->productGenerator->generate($keyWords, $count);
+        if ($withImages === null) {
+            $withImages = true;
+        } else {
+            $withImages = (bool)$withImages;
+        }
 
-        return 1;
+
+        $this->productGenerator->setCallback($this);
+
+        $this->productGenerator->setGenerateImages($withImages);
+
+
+        $this->io->progressStart($count);
+
+        $this->productGenerator->generate($keyWords, $count, $category);
+
+        $this->io->progressFinish();
+
+
+        if ($this->errorCount <= 0) {
+            $this->io->success('Generated ' . $this->generatedCount . ' products for keywords');
+        } else {
+            $this->io->warning('Generated ' . $this->generatedCount . ' products. Errors: ' . $this->errorCount);
+        }
+
+        return 0;
     }
+
+    /**
+     * @param string $name
+     * @return void
+     */
+    public function onProductGenerated(string $name): void
+    {
+        $this->io->comment($name);
+        $this->io->progressAdvance();
+
+        $this->generatedCount++;
+    }
+
+    /**
+     * @param string $error
+     * @return void
+     */
+    public function onProductGenerationFailed(string $error): void
+    {
+        $this->io->error($error);
+
+        $this->errorCount++;
+    }
+
 }
