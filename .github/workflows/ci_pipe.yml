@@ -24,10 +24,10 @@ jobs:
         with:
           php-version: 8.1
         # -----------------------------------
-      - name: Mount Cache
+      - name: Mount Dev Dependency Cache
         uses: actions/cache@v3
         with:
-          key: cache-dev-${{ github.run_id }}
+          key: cache-dev-dependencies-${{ github.run_id }}
           path: |
             vendor
         # -----------------------------------
