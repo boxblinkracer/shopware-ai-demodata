@@ -64,7 +64,7 @@ jobs:
 
       - name: Build ZIP File
         run: |
-          make build -B
+          make release -B
 
       - name: Extract ZIP file for artifact
         shell: bash
