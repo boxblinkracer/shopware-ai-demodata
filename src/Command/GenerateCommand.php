@@ -14,7 +14,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class GenerateCommand extends Command implements ProductGeneratorInterface
 {
 
-    public static $defaultName = 'ai-demo-data:generate';
+    public static $defaultName = 'ai-demodata:generate:products';
 
     /**
      * @var ProductGenerator
@@ -54,7 +54,7 @@ class GenerateCommand extends Command implements ProductGeneratorInterface
     {
         $this
             ->setName((string)self::$defaultName)
-            ->setDescription('Generator AI Demo data with the help of OpenAI.')
+            ->setDescription('Generator AI product demo data with the help of OpenAI.')
             ->addOption('count', null, InputOption::VALUE_REQUIRED, 'Number of products to generate')
             ->addOption('keywords', null, InputOption::VALUE_REQUIRED, 'Keywords to generate products for')
             ->addOption('category', null, InputOption::VALUE_REQUIRED, 'The name of your category in the Storefront to append the products to.')
@@ -70,7 +70,7 @@ class GenerateCommand extends Command implements ProductGeneratorInterface
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->io = new SymfonyStyle($input, $output);
-        $this->io->title('AI Demo Data Generator');
+        $this->io->title('AI Product Demo Data Generator');
 
         $count = $input->getOption('count');
         $keyWords = $input->getOption('keywords');
