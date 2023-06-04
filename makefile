@@ -21,3 +21,17 @@ test: ## Starts all Tests
 
 stan: ## Starts the PHPStan Analyser
 	php ./vendor/bin/phpstan --memory-limit=1G analyse .
+
+
+release: ## Builds a PROD version and creates a ZIP file in plugins/.build.
+	mkdir -p ./.build
+	rm -rf ./.build/AIDemoData.zip || true;
+	# -------------------------------------------------------------------------------------------------
+	@echo "INSTALL PRODUCTION DEPENDENCIES"
+	make prod -B
+	# -------------------------------------------------------------------------------------------------
+	@echo "CREATE ZIP FILE"
+	zip -qq -r -0 ./.build/AIDemoData.zip . -x '*.git*' '*.github*' '*devops*' '*.idea*' '*.build*' '*node_modules*' '*makefile*' '*.eslintrc.json*' '*.prettierrc.json*' '*package.json*' '*package-lock.json*'
+	@echo ""
+	@echo "CONGRATULATIONS"
+	@echo "The new ZIP file is available"
