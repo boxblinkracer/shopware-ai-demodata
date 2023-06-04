@@ -119,6 +119,8 @@ class ProductGenerator
         $prompt .= 'name of the product' . PHP_EOL;
         $prompt .= 'description (about 400 characters)' . PHP_EOL;
         $prompt .= 'price value (no currency just number)' . PHP_EOL;
+        $prompt .= 'EAN code' . PHP_EOL;
+        $prompt .= 'SEO description (max 100 characters)' . PHP_EOL;
         $prompt .= PHP_EOL;
         $prompt .= 'product number should be 16 unique random letters.' . PHP_EOL;
         $prompt .= 'Please only create this number of products: ' . $maxCount . PHP_EOL;
@@ -152,7 +154,8 @@ class ProductGenerator
                 $name = (string)$parts[2];
                 $description = (string)$parts[3];
                 $price = (string)$parts[4];
-
+                $ean = (string)$parts[5];
+                $metaDescription = (string)$parts[6];
 
                 if (empty($name)) {
                     continue;
@@ -174,9 +177,9 @@ class ProductGenerator
                         $this->callback->onProductImageGenerating();
                     }
 
-                    $temp_file = $this->generateImage($name, $description);
+                    $tmpImageFile = $this->generateImage($name, $description);
                 } else {
-                    $temp_file = '';
+                    $tmpImageFile = '';
                 }
 
                 $this->createProduct(
@@ -186,7 +189,9 @@ class ProductGenerator
                     $category,
                     $description,
                     $price,
-                    $temp_file
+                    $tmpImageFile,
+                    $ean,
+                    $metaDescription
                 );
 
                 if ($this->callback !== null) {
@@ -210,9 +215,11 @@ class ProductGenerator
      * @param string $description
      * @param float $price
      * @param string $image
+     * @param string $ean
+     * @param string $metaDescription
      * @return void
      */
-    private function createProduct(string $id, string $name, string $number, string $categoryName, string $description, float $price, string $image): void
+    private function createProduct(string $id, string $name, string $number, string $categoryName, string $description, float $price, string $image, string $ean, string $metaDescription): void
     {
         # just reuse the product one ;)
         $mediaId = $id;
@@ -253,6 +260,8 @@ class ProductGenerator
             'taxId' => $tax->getId(),
             'productNumber' => $number,
             'description' => $description,
+            'ean' => $ean,
+            'metaDescription' => $metaDescription,
             'visibilities' => [
                 [
                     'id' => $visibilityID,
