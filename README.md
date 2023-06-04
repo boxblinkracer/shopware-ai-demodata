@@ -15,13 +15,13 @@ Clone this repository to your Shopware 6 project's custom/plugins directory.
 
 Navigate to your Shopware 6 project's root directory and run the following command to install the plugin dependencies:
 
-```bash
+```ruby
 make prod
 ```
 
 Now just install the plugin in the Shopware 6 administration panel and activate it or by using this CLI command.
 
-```bash
+```ruby
 php bin/console plugin:refresh
 php bin/console plugin:install --activate AIDemoData
 ```
@@ -39,8 +39,7 @@ Once the plugin is activated and configured with your OpenAI API key, you can us
 
 To generate demo data, open your terminal, navigate to your Shopware 6 project's root directory, and run the following command:
 
-```bash
-Copy code
+```ruby
 php bin/console ai-demo-data:generate --keywords='baseball gloves, right and left, leather, high quality' --count=2
 ```
 
