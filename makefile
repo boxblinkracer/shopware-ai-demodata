@@ -53,7 +53,7 @@ release: ## Builds a PROD version and creates a ZIP file in plugins/.build.
 	make prod -B
 	# -------------------------------------------------------------------------------------------------
 	@echo "CREATE ZIP FILE"
-	zip -qq -r -0 ./.build/AIDemoData.zip . -x '*.git*' '*.github*' '*devops*' '*.idea*' '*.build*' '*node_modules*' '*makefile*' '*phpunit.xml*' '*.php_cs.php*' '*.phpstan.neon*' '*.eslintrc.json*' '*.prettierrc.json*' '*package.json*' '*package-lock.json*'
+	zip -qq -r -0 ./.build/AIDemoData.zip . -x '*.git*' '*.github*' '*devops*' '*.idea*' '*.reports*' '*tests*' '*.build*' '*node_modules*' '*makefile*' '*phpunit.xml*' '*.php_cs.php*' '*.phpstan.neon*' '*.eslintrc.json*' '*.prettierrc.json*' '*package.json*' '*package-lock.json*'
 	@echo ""
 	@echo "CONGRATULATIONS"
 	@echo "The new ZIP file is available"
