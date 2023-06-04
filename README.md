@@ -54,3 +54,17 @@ configured product structure.
 Please note that the generated demo data will be based on AI predictions and may not reflect actual product information.
 It is recommended to review and adjust the generated data before using it in a production environment.
 
+## Contribution
+
+Contributions are always welcome! Please create a pull request to contribute to this project.
+
+You can simply start a development environment with Docker.
+Just open the **devops** folder and run the following command:
+
+```ruby
+make run
+```
+
+After a few seconds your development environment should be up and running.
+You only need to provide your OpenAI API key and that's it.
+
