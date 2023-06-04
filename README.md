@@ -1,5 +1,11 @@
 # Shopware 6 AI Demo Data Plugin
 
+![Build Status](https://github.com/boxblinkracer/shopware-ai-demodata/actions/workflows/ci_pipe.yml/badge.svg)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/boxblinkracer/shopware-ai-demodata)
+![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/boxblinkracer/shopware-ai-demodata/latest)
+![Packagist Downloads](https://img.shields.io/packagist/dt/boxblinkracer/shopware-ai-demodata?color=green&logo=packagist)
+
+
 This plugin is designed to generate demo data for Shopware 6 based on artificial intelligence (AI) technology. It allows you to quickly populate your Shopware 6 shop with sample data using AI-generated product information.
 
 <p align="center">
