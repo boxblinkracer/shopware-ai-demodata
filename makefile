@@ -24,9 +24,6 @@ clean: ## Clears all dependencies
 phpcheck: ## Starts the PHP syntax checks
 	@find . -name '*.php' -not -path "./vendor/*" -not -path "./tests/*" | xargs -n 1 -P4 php -l
 
-stan: ## Starts the PHPStan Analyser
-	php ./vendor/bin/phpstan --memory-limit=1G analyse .
-
 # ------------------------------------------------------------------------------------------------------------
 
 release: ## Builds a PROD version and creates a ZIP file in plugins/.build.
