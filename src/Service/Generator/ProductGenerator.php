@@ -104,8 +104,8 @@ class ProductGenerator
      * @param string $keywords
      * @param int $maxCount
      * @param string $category
-     * @return void
      * @throws \Exception
+     * @return void
      */
     public function generate(string $keywords, int $maxCount, string $category)
     {
@@ -304,8 +304,8 @@ class ProductGenerator
     /**
      * @param string $productName
      * @param string $productDescription
-     * @return string
      * @throws \Exception
+     * @return string
      */
     private function generateImage(string $productName, string $productDescription): string
     {
