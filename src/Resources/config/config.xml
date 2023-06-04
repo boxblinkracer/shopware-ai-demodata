@@ -6,7 +6,7 @@
 
         <input-field type="password">
             <name>apiKey</name>
-            <label>Open AI Key</label>
+            <label>OpenAI Key</label>
             <helpText>Enter your OpenAI Api key from https://platform.openai.com/account/api-keys</helpText>
         </input-field>
 
