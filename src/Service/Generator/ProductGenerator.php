@@ -102,25 +102,26 @@ class ProductGenerator
 
     /**
      * @param string $keywords
-     * @param int $count
+     * @param int $maxCount
      * @param string $category
-     * @throws \Exception
      * @return void
+     * @throws \Exception
      */
-    public function generate(string $keywords, int $count, string $category)
+    public function generate(string $keywords, int $maxCount, string $category)
     {
         $prompt = 'Create a list of demo products with these properties, separated values with ";". Only write down values and no property names ' . PHP_EOL;
         $prompt .= PHP_EOL;
         $prompt .= 'the following properties should be generated.' . PHP_EOL;
         $prompt .= 'Every resulting line should be in the order and sort provided below:' . PHP_EOL;
         $prompt .= PHP_EOL;
-        $prompt .= 'product number' . PHP_EOL;
+        $prompt .= 'product count' . PHP_EOL;
+        $prompt .= 'product number code' . PHP_EOL;
         $prompt .= 'name of the product' . PHP_EOL;
         $prompt .= 'description (about 400 characters)' . PHP_EOL;
         $prompt .= 'price value (no currency just number)' . PHP_EOL;
         $prompt .= PHP_EOL;
-        $prompt .= 'product number should be 20 unique random letters.' . PHP_EOL;
-        $prompt .= 'Please only create this number of products: ' . $count . PHP_EOL;
+        $prompt .= 'product number should be 16 unique random letters.' . PHP_EOL;
+        $prompt .= 'Please only create this number of products: ' . $maxCount . PHP_EOL;
         $prompt .= 'The industry of the products should be: ' . $keywords;
 
 
@@ -128,6 +129,8 @@ class ProductGenerator
 
         $text = $choice->getText();
 
+
+        $currentCount = 0;
 
         /* @phpstan-ignore-next-line */
         foreach (preg_split("/((\r?\n)|(\r\n?))/", $text) as $line) {
@@ -142,11 +145,13 @@ class ProductGenerator
                     continue;
                 }
 
+                $currentCount++;
+
                 $id = Uuid::randomHex();
-                $number = (string)$parts[0];
-                $name = (string)$parts[1];
-                $description = (string)$parts[2];
-                $price = (string)$parts[3];
+                $number = (string)$parts[1];
+                $name = (string)$parts[2];
+                $description = (string)$parts[3];
+                $price = (string)$parts[4];
 
 
                 if (empty($name)) {
@@ -159,7 +164,16 @@ class ProductGenerator
                     $price = (float)$price;
                 }
 
+                if ($this->callback !== null) {
+                    $this->callback->onProductGenerating($number, $name, $currentCount, $maxCount);
+                }
+
                 if ($this->generateImages) {
+
+                    if ($this->callback !== null) {
+                        $this->callback->onProductImageGenerating();
+                    }
+
                     $temp_file = $this->generateImage($name, $description);
                 } else {
                     $temp_file = '';
@@ -176,11 +190,13 @@ class ProductGenerator
                 );
 
                 if ($this->callback !== null) {
-                    $this->callback->onProductGenerated($name);
+                    $this->callback->onProductGenerated($number, $name, $currentCount, $maxCount);
                 }
+
             } catch (\Exception $ex) {
+
                 if ($this->callback !== null) {
-                    $this->callback->onProductGenerationFailed($ex->getMessage());
+                    $this->callback->onProductGenerationFailed($ex->getMessage(), $currentCount, $maxCount);
                 }
             }
         }
@@ -282,8 +298,8 @@ class ProductGenerator
     /**
      * @param string $productName
      * @param string $productDescription
-     * @throws \Exception
      * @return string
+     * @throws \Exception
      */
     private function generateImage(string $productName, string $productDescription): string
     {
