@@ -104,8 +104,8 @@ class ProductGenerator
      * @param string $keywords
      * @param int $maxCount
      * @param string $category
-     * @throws \Exception
      * @return void
+     * @throws \Exception
      */
     public function generate(string $keywords, int $maxCount, string $category)
     {
@@ -114,16 +114,16 @@ class ProductGenerator
         $prompt .= 'the following properties should be generated.' . PHP_EOL;
         $prompt .= 'Every resulting line should be in the order and sort provided below:' . PHP_EOL;
         $prompt .= PHP_EOL;
-        $prompt .= 'product count' . PHP_EOL;
-        $prompt .= 'product number code' . PHP_EOL;
-        $prompt .= 'name of the product' . PHP_EOL;
-        $prompt .= 'description (about 400 characters)' . PHP_EOL;
-        $prompt .= 'price value (no currency just number)' . PHP_EOL;
-        $prompt .= 'EAN code' . PHP_EOL;
-        $prompt .= 'SEO description (max 100 characters)' . PHP_EOL;
+        $prompt .= 'product count.' . PHP_EOL;
+        $prompt .= 'product number code. should be 16 unique random alphanumeric.' . PHP_EOL;
+        $prompt .= 'name of the product.' . PHP_EOL;
+        $prompt .= 'description (about 400 characters).' . PHP_EOL;
+        $prompt .= 'price value (no currency just number).' . PHP_EOL;
+        $prompt .= 'EAN code.' . PHP_EOL;
+        $prompt .= 'SEO description (max 100 characters).' . PHP_EOL;
         $prompt .= PHP_EOL;
-        $prompt .= 'product number should be 16 unique random letters.' . PHP_EOL;
         $prompt .= 'Please only create this number of products: ' . $maxCount . PHP_EOL;
+        $prompt .= PHP_EOL;
         $prompt .= 'The industry of the products should be: ' . $keywords;
 
 
@@ -304,8 +304,8 @@ class ProductGenerator
     /**
      * @param string $productName
      * @param string $productDescription
-     * @throws \Exception
      * @return string
+     * @throws \Exception
      */
     private function generateImage(string $productName, string $productDescription): string
     {
