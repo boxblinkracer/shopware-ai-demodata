@@ -72,8 +72,8 @@ php bin/console ai-demodata:generate:products --keywords='baseball gloves, right
 * **Category**:
   The optional name of the category if you would like to automatically assign the generated demo data to a category in the Storefront.
 
-* **With Images**:
-  The **--with-images** option indicates whether the generated demo data should contain images (default: true).
+* **Product Images**:
+  The **--images** option indicates whether the generated demo data should contain images (default: true).
 
 After running the command, the plugin will use the specified keywords and AI technology to generate demo data based on your Shopware 6 shop's
 configured product structure.
