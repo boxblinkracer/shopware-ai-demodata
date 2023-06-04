@@ -2,7 +2,6 @@
 
 namespace AIDemoData\Service\Media;
 
-
 use Shopware\Core\Content\Media\Aggregate\MediaFolder\MediaFolderEntity;
 use Shopware\Core\Content\Media\File\FileFetcher;
 use Shopware\Core\Content\Media\File\FileSaver;
@@ -10,7 +9,6 @@ use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
-
 
 class ImageUploader
 {
@@ -51,9 +49,10 @@ class ImageUploader
     }
 
     /**
-     * Copied from "vendor/shopware/core/Content/Media/MediaService.php".
+     * @param string $folderName
+     * @return MediaFolderEntity
      */
-    public function getDefaultFolder(string $folderName): ?MediaFolderEntity
+    public function getDefaultFolder(string $folderName): MediaFolderEntity
     {
         $criteria = (new Criteria())
             ->addFilter(new EqualsFilter('media_folder.defaultFolder.entity', $folderName))
@@ -69,12 +68,13 @@ class ImageUploader
     {
         $ctx = Context::createDefaultContext();
 
-        $this->mediaRepository->upsert([
+        $this->mediaRepository->upsert(
             [
-                'id' => $mediaId,
-                'mediaFolderId' => $folderId,
+                [
+                    'id' => $mediaId,
+                    'mediaFolderId' => $folderId,
+                ],
             ],
-        ],
             $ctx
         );
 
@@ -91,5 +91,4 @@ class ImageUploader
             $ctx
         );
     }
-
 }

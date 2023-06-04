@@ -2,7 +2,6 @@
 
 namespace AIDemoData\Service\OpenAI;
 
-
 use Orhanerday\OpenAi\OpenAi;
 
 class Client
@@ -25,8 +24,8 @@ class Client
 
     /**
      * @param string $prompt
+     * @throws \JsonException
      * @return Choice
-     * @throws \Exception
      */
     public function generateText(string $prompt): Choice
     {
@@ -43,10 +42,10 @@ class Client
 
         $complete = (string)$this->openAi->completion($params);
 
-        $json = json_decode($complete, true);
+        $json = json_decode($complete, true, 512, JSON_THROW_ON_ERROR);
 
         if (!is_array($json)) {
-            return '';
+            return new Choice('');
         }
 
         if (isset($json['error'])) {
@@ -61,20 +60,24 @@ class Client
         $choices = $json['choices'];
 
         if (!is_array($choices) || count($choices) <= 0) {
-            return '';
+            return new Choice('');
         }
 
         if (!isset($choices[0]['text'])) {
-            return '';
+            return new Choice('');
         }
 
-        return new Choice($choices[0]);
+        $choiceData = $choices[0];
+
+        $text = trim($choiceData['text']);
+
+        return new Choice($text);
     }
 
     /**
      * @param string $prompt
+     * @throws \JsonException
      * @return string
-     * @throws \Exception
      */
     public function generateImage(string $prompt): string
     {
@@ -85,7 +88,7 @@ class Client
             "response_format" => "url",
         ]);
 
-        $json = json_decode($complete, true);
+        $json = json_decode((string)$complete, true, 512, JSON_THROW_ON_ERROR);
 
         if (!is_array($json) || count($json) <= 0) {
             throw new \Exception('Image not generated');
@@ -98,5 +101,4 @@ class Client
 
         return (string)$json['data'][0]['url'];
     }
-
 }

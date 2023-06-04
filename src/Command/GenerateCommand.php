@@ -2,7 +2,6 @@
 
 namespace AIDemoData\Command;
 
-
 use AIDemoData\Service\Generator\ProductGenerator;
 use AIDemoData\Service\Generator\ProductGeneratorInterface;
 use Symfony\Component\Console\Command\Command;
@@ -13,7 +12,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class GenerateCommand extends Command implements ProductGeneratorInterface
 {
-
     public static $defaultName = 'ai-demodata:generate:products';
 
     /**
@@ -64,8 +62,8 @@ class GenerateCommand extends Command implements ProductGeneratorInterface
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int
      * @throws \Exception
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -139,5 +137,4 @@ class GenerateCommand extends Command implements ProductGeneratorInterface
 
         $this->errorCount++;
     }
-
 }

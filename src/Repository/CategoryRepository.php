@@ -53,5 +53,4 @@ class CategoryRepository
             ->search($criteria, Context::createDefaultContext())
             ->first();
     }
-
 }

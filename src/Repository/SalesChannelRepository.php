@@ -40,5 +40,4 @@ class SalesChannelRepository
             ->search($criteria, Context::createDefaultContext())
             ->first();
     }
-
 }

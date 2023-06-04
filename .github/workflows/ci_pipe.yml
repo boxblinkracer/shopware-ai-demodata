@@ -46,17 +46,86 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: 8.1
         # -----------------------------------
       - name: PHP Syntax Checks
         run: make phpcheck -B
+
+  phpunit:
+    name: PHPUnit
+    needs: install_dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+
+      - name: Mount Dev Dependency Cache
+        uses: actions/cache@v3
+        with:
+          key: cache-dev-dependencies-${{ github.run_id }}
+          path: |
+            vendor
+
+      - name: Run PHPUnit
+        run: make phpunit -B
+
+  phpstan:
+    name: PHPStan
+    needs: install_dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+
+      - name: Mount Dev Dependency Cache
+        uses: actions/cache@v3
+        with:
+          key: cache-dev-dependencies-${{ github.run_id }}
+          path: |
+            vendor
+
+      - name: Run PHPStan
+        run: make stan -B
+
+  csfixer:
+    name: CS Fixer
+    needs: install_dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+
+      - name: Mount Dev Dependency Cache
+        uses: actions/cache@v3
+        with:
+          key: cache-dev-dependencies-${{ github.run_id }}
+          path: |
+            vendor
+
+      - name: Run CS Fixer
+        run: make csfix -B
 
   # ------------------------------------------------------------------------------------------------------------------------
 
   build:
     name: Build ZIP File
     runs-on: ubuntu-latest
-    needs: [ syntax_checks ]
+    needs: [ syntax_checks, phpunit, phpstan, csfixer ]
     steps:
 
       - name: Clone Code
@@ -82,7 +151,6 @@ jobs:
         shell: bash
         run: |
           rm -rf ./.build/extension
-          
 
   # ------------------------------------------------------------------------------------------------------------------------
 

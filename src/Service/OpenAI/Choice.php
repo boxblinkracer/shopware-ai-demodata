@@ -12,11 +12,11 @@ class Choice
 
 
     /**
-     * @param array<mixed> $data
+     * @param string $text
      */
-    public function __construct(array $data)
+    public function __construct(string $text)
     {
-        $this->text = trim($data['text']);
+        $this->text = $text;
     }
 
     /**
@@ -26,5 +26,4 @@ class Choice
     {
         return $this->text;
     }
-
 }

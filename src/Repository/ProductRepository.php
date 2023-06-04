@@ -8,7 +8,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\System\Tax\TaxEntity;
 
-class TaxRepository
+class ProductRepository
 {
 
     /**
@@ -27,17 +27,12 @@ class TaxRepository
 
 
     /**
-     * @param int $taxRate
-     * @return TaxEntity
+     * @param array<mixed> $data
+     * @param Context $context
+     * @return void
      */
-    public function getTaxEntity(int $taxRate): TaxEntity
+    public function upsert(array $data, Context $context): void
     {
-        $criteria = (new Criteria())
-            ->addFilter(new EqualsFilter('taxRate', $taxRate))
-            ->setLimit(1);
-
-        return $this->repository
-            ->search($criteria, Context::createDefaultContext())
-            ->first();
+        $this->repository->upsert($data, $context);
     }
 }

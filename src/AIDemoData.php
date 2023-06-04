@@ -2,10 +2,7 @@
 
 namespace AIDemoData;
 
-
 use Shopware\Core\Framework\Plugin;
-
-
 
 class AIDemoData extends Plugin
 {

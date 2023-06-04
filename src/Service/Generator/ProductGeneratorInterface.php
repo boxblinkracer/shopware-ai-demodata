@@ -16,5 +16,4 @@ interface ProductGeneratorInterface
      * @return void
      */
     public function onProductGenerationFailed(string $error): void;
-
 }

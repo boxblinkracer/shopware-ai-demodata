@@ -43,5 +43,4 @@ class CurrencyRepository
                 Context::createDefaultContext()
             )->first();
     }
-
 }

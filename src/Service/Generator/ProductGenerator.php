@@ -2,30 +2,26 @@
 
 namespace AIDemoData\Service\Generator;
 
-
 use AIDemoData\Repository\CategoryRepository;
 use AIDemoData\Repository\CurrencyRepository;
+use AIDemoData\Repository\ProductRepository;
 use AIDemoData\Repository\SalesChannelRepository;
 use AIDemoData\Repository\TaxRepository;
 use AIDemoData\Service\Media\ImageUploader;
 use AIDemoData\Service\OpenAI\Client;
 use Shopware\Core\Framework\Context;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\Uuid\Uuid;
-
 
 class ProductGenerator
 {
 
-
     /**
      * @var Client
      */
-    private $client;
+    private $openAI;
 
     /**
-     * @var EntityRepository
+     * @var ProductRepository
      */
     private $repoProducts;
 
@@ -66,16 +62,16 @@ class ProductGenerator
 
     /**
      * @param Client $client
-     * @param EntityRepository $repoProducts
+     * @param ProductRepository $repoProducts
      * @param TaxRepository $repoTaxes
      * @param SalesChannelRepository $repoSalesChannel
      * @param CurrencyRepository $repoCurrency
      * @param CategoryRepository $repoCategory
      * @param ImageUploader $imageUploader
      */
-    public function __construct(Client $client, EntityRepository $repoProducts, TaxRepository $repoTaxes, SalesChannelRepository $repoSalesChannel, CurrencyRepository $repoCurrency, CategoryRepository $repoCategory, ImageUploader $imageUploader)
+    public function __construct(Client $client, ProductRepository $repoProducts, TaxRepository $repoTaxes, SalesChannelRepository $repoSalesChannel, CurrencyRepository $repoCurrency, CategoryRepository $repoCategory, ImageUploader $imageUploader)
     {
-        $this->client = $client;
+        $this->openAI = $client;
         $this->repoProducts = $repoProducts;
         $this->repoTaxes = $repoTaxes;
         $this->repoSalesChannel = $repoSalesChannel;
@@ -108,8 +104,8 @@ class ProductGenerator
      * @param string $keywords
      * @param int $count
      * @param string $category
-     * @return void
      * @throws \Exception
+     * @return void
      */
     public function generate(string $keywords, int $count, string $category)
     {
@@ -128,20 +124,18 @@ class ProductGenerator
         $prompt .= 'The industry of the products should be: ' . $keywords;
 
 
-        $choice = $this->client->generateText($prompt);
+        $choice = $this->openAI->generateText($prompt);
 
         $text = $choice->getText();
 
 
+        /* @phpstan-ignore-next-line */
         foreach (preg_split("/((\r?\n)|(\r\n?))/", $text) as $line) {
-
             if (empty($line)) {
                 continue;
             }
 
-
             try {
-
                 $parts = explode(';', $line);
 
                 if (count($parts) < 4) {
@@ -178,20 +172,16 @@ class ProductGenerator
                     $category,
                     $description,
                     $price,
-                    $temp_file,
-                    [],
+                    $temp_file
                 );
 
                 if ($this->callback !== null) {
                     $this->callback->onProductGenerated($name);
                 }
-
             } catch (\Exception $ex) {
-
                 if ($this->callback !== null) {
                     $this->callback->onProductGenerationFailed($ex->getMessage());
                 }
-
             }
         }
     }
@@ -204,10 +194,9 @@ class ProductGenerator
      * @param string $description
      * @param float $price
      * @param string $image
-     * @param array $customFields
      * @return void
      */
-    private function createProduct(string $id, string $name, string $number, string $categoryName, string $description, float $price, string $image, array $customFields): void
+    private function createProduct(string $id, string $name, string $number, string $categoryName, string $description, float $price, string $image): void
     {
         # just reuse the product one ;)
         $mediaId = $id;
@@ -271,11 +260,9 @@ class ProductGenerator
                 ]
             ],
             'coverId' => $coverId,
-            'customFields' => $customFields,
         ];
 
         if (!empty($categoryName)) {
-
             $category = $this->repoCategory->getByName($categoryName);
             $productData['categories'] = [
                 [
@@ -295,23 +282,30 @@ class ProductGenerator
     /**
      * @param string $productName
      * @param string $productDescription
-     * @return string
      * @throws \Exception
+     * @return string
      */
     private function generateImage(string $productName, string $productDescription): string
     {
-        $url = $this->client->generateImage($productName . ' ' . $productDescription);
+        $url = $this->openAI->generateImage($productName . ' ' . $productDescription);
 
-        $temp_file = tempnam(sys_get_temp_dir(), 'ai-product');
+        $tmpFile = tempnam(sys_get_temp_dir(), 'ai-product');
 
         $ch = curl_init($url);
-        $fp = fopen($temp_file, 'wb');
+
+        /* @phpstan-ignore-next-line */
+        $fp = fopen($tmpFile, 'wb');
+        /* @phpstan-ignore-next-line */
         curl_setopt($ch, CURLOPT_FILE, $fp);
+        /* @phpstan-ignore-next-line */
         curl_setopt($ch, CURLOPT_HEADER, 0);
+        /* @phpstan-ignore-next-line */
         curl_exec($ch);
+        /* @phpstan-ignore-next-line */
         curl_close($ch);
+        /* @phpstan-ignore-next-line */
         fclose($fp);
 
-        return (string)$temp_file;
+        return (string)$tmpFile;
     }
 }

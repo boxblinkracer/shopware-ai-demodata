@@ -22,12 +22,12 @@ class Factory
     }
 
     /**
-     * @return Client
      * @throws \Exception
+     * @return Client
      */
     public function create(): Client
     {
-        $apiKey = (string)$this->configService->get('AIDemoData.config.apiKey');
+        $apiKey = $this->configService->getString('AIDemoData.config.apiKey');
 
         if (empty($apiKey)) {
             throw new \Exception('No API Key found in plugin configuration. Please provide your key');
@@ -35,5 +35,4 @@ class Factory
 
         return new Client($apiKey);
     }
-
 }
