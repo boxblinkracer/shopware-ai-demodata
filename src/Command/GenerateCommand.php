@@ -62,8 +62,8 @@ class GenerateCommand extends Command implements ProductGeneratorInterface
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int
      * @throws \Exception
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
