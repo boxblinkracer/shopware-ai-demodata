@@ -4,10 +4,12 @@
     <card>
         <title>OpenAI</title>
 
-        <input-field type="text">
+        <input-field type="password">
             <name>apiKey</name>
-            <label>Api Key</label>
+            <label>Open AI Key</label>
+            <helpText>Enter your OpenAI Api key from https://platform.openai.com/account/api-keys</helpText>
         </input-field>
 
     </card>
+
 </config>
