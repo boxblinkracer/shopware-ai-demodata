@@ -17,4 +17,5 @@ run: ## Starts the project
 	docker exec -it shopware bash -c 'php bin/console plugin:refresh'
 	docker exec -it shopware bash -c 'php bin/console plugin:install --activate AIDemoData'
 	open http://localhost
+	open http://localhost/admin#/sw/extension/config/AIDemoData
 	docker exec -it shopware bash
