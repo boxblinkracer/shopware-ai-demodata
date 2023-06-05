@@ -3,20 +3,20 @@
 namespace AIDemoData\Service\OpenAI;
 
 use AIDemoData\Component\OpenAI\OpenAI;
-use Shopware\Core\System\SystemConfig\SystemConfigService;
+use AIDemoData\Service\Config\ConfigService;
 
 class Factory
 {
 
     /**
-     * @var SystemConfigService
+     * @var ConfigService
      */
     private $configService;
 
     /**
-     * @param SystemConfigService $configService
+     * @param ConfigService $configService
      */
-    public function __construct(SystemConfigService $configService)
+    public function __construct(ConfigService $configService)
     {
         $this->configService = $configService;
     }
@@ -27,7 +27,7 @@ class Factory
      */
     public function create(): Client
     {
-        $apiKey = $this->configService->getString('AIDemoData.config.apiKey');
+        $apiKey = $this->configService->getOpenAiKey();
 
         if (empty($apiKey)) {
             throw new \Exception('No API Key found in plugin configuration. Please provide your key');

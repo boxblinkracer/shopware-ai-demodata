@@ -12,4 +12,63 @@
 
     </card>
 
+
+    <card>
+        <title>Products</title>
+
+        <input-field type="bool">
+            <name>productImageEnabled</name>
+            <label>Product Images</label>
+            <defaultValue>true</defaultValue>
+            <helpText>If enabled product images will be automatically generated if no CLI argument is provided.</helpText>
+        </input-field>
+
+        <input-field type="single-select">
+            <name>productImageSize</name>
+            <label>Size (px)</label>
+            <defaultValue>1024x1024</defaultValue>
+            <options>
+                <option>
+                    <id>1024x1024</id>
+                    <name>1024x1024</name>
+                </option>
+                <option>
+                    <id>256x256</id>
+                    <name>256x256</name>
+                </option>
+                <option>
+                    <id>512x512</id>
+                    <name>512x512</name>
+                </option>
+            </options>
+        </input-field>
+
+    </card>
+
+
+    <card>
+        <title>Media</title>
+
+        <input-field type="single-select">
+            <name>mediaImageSize</name>
+            <label>Size (px)</label>
+            <defaultValue>1024x1024</defaultValue>
+            <options>
+                <option>
+                    <id>1024x1024</id>
+                    <name>1024x1024</name>
+                </option>
+                <option>
+                    <id>256x256</id>
+                    <name>256x256</name>
+                </option>
+                <option>
+                    <id>512x512</id>
+                    <name>512x512</name>
+                </option>
+            </options>
+        </input-field>
+
+    </card>
+
 </config>

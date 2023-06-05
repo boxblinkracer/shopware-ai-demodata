@@ -5,13 +5,11 @@
 ![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/boxblinkracer/shopware-ai-demodata/latest)
 ![Packagist Downloads](https://img.shields.io/packagist/dt/boxblinkracer/shopware-ai-demodata?color=green&logo=packagist)
 
-
 This plugin is designed to generate demo data for Shopware 6 based on artificial intelligence (AI) technology. It allows you to quickly populate your Shopware 6 shop with sample data using AI-generated product information.
 
 <p align="center">
    <img src="/.github/assets/shoes.png">
 </p>
-
 
 ## Installation
 
@@ -54,32 +52,45 @@ php bin/console system:config:set AIDemoData.config.apiKey 123
 
 Once the plugin is activated and configured with your OpenAI API key, you can use the command-line interface (CLI) to generate demo data.
 
-To generate demo data, open your terminal, navigate to your Shopware 6 project's root directory, and run the following command:
+To generate demo data, open your terminal, navigate to your Shopware 6 project's root directory, and run the following commands.
+
+### Generate Products
 
 ```ruby
+php bin/console ai-demodata:generate:products --keywords=''
+
+# Sample
 php bin/console ai-demodata:generate:products --keywords='baseball gloves, right and left, leather, high quality' --count=2
 ```
 
-### Options
-
-* **Keywords**:
-  In this example, the **--keywords** option specifies the keywords or topics related to the desired demo data.
-  You can play around with these values to generate different demo data and improve your results.
-
-* **Count**:
-  The **--count** option indicates the number of demo data entries to generate (default: 1).
-
-* **Category**:
-  The optional name of the category if you would like to automatically assign the generated demo data to a category in the Storefront.
-
-* **Product Images**:
-  The **--images** option indicates whether the generated demo data should contain images (default: true).
+| Feature     | Argument      | Description                                                                                                                                                       |
+|-------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Keywords    | --keywords    | Specifies the keywords or topics related to the desired demo data. You can play around with these values to generate different demo data and improve your results |
+| Count       | --count       | Indicates the number of demo data entries to generate (default: 1)                                                                                                |
+| Category    | --category    | The optional name of the category if you would like to automatically assign the generated demo data to a category in the Storefront.                              |
+| Images      | --images      | Indicates whether the generated demo data should contain images (default: plugin-configuration)                                                                   |
+| Images Size | --images-size | Specifies a size for the images of allowed OpenAI sizes like 1024x1024, 512x512 (default: plugin-configuration)                                                   |
 
 After running the command, the plugin will use the specified keywords and AI technology to generate demo data based on your Shopware 6 shop's
 configured product structure.
 
-Please note that the generated demo data will be based on AI predictions and may not reflect actual product information.
-It is recommended to review and adjust the generated data before using it in a production environment.
+### Generate Media Images
+
+```ruby 
+php bin/console ai-demodata:generate:media --keywords=''
+
+# Sample
+php bin/console ai-demodata:generate:media --keywords='advertisement banner with shoes, woman standing in a city on a square, presenting her white leather high heels, focus on shoes, sun is shining, bright colors, suitcase next to shoes, grass in the background' --count=1
+```
+
+| Feature  | Argument   | Description                                                                                                                                                       |
+|----------|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Keywords | --keywords | Specifies the keywords or topics related to the desired demo data. You can play around with these values to generate different demo data and improve your results |
+| Count    | --count    | Indicates the number of demo data entries to generate (default: 1)                                                                                                |
+| Size     | --size     | Specifies a size for the images of allowed OpenAI sizes like 1024x1024, 512x512 (default: plugin-configuration)                                                   |
+
+> Please note that the generated demo data will be based on AI predictions and may not reflect actual product information.
+> It is recommended to review and adjust the generated data before using it in a production environment.
 
 ## Contribution
 

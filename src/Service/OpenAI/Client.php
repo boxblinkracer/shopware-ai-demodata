@@ -76,15 +76,16 @@ class Client
 
     /**
      * @param string $prompt
+     * @param string $size
      * @throws \JsonException
      * @return string
      */
-    public function generateImage(string $prompt): string
+    public function generateImage(string $prompt, string $size): string
     {
         $complete = $this->openAi->image([
             "prompt" => $prompt,
             "n" => 1,
-            "size" => "1024x1024",
+            "size" => $size,
             "response_format" => "url",
         ]);
 

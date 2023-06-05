@@ -7,6 +7,7 @@ use AIDemoData\Repository\CurrencyRepository;
 use AIDemoData\Repository\ProductRepository;
 use AIDemoData\Repository\SalesChannelRepository;
 use AIDemoData\Repository\TaxRepository;
+use AIDemoData\Service\Config\ConfigService;
 use AIDemoData\Service\Media\ImageUploader;
 use AIDemoData\Service\OpenAI\Client;
 use Shopware\Core\Framework\Context;
@@ -61,6 +62,12 @@ class ProductGenerator
     private $generateImages;
 
     /**
+     * @var string
+     */
+    private $imageSize;
+
+
+    /**
      * @param Client $client
      * @param ProductRepository $repoProducts
      * @param TaxRepository $repoTaxes
@@ -93,10 +100,13 @@ class ProductGenerator
 
     /**
      * @param bool $generateImages
+     * @param string $imageSize
+     * @return void
      */
-    public function setGenerateImages(bool $generateImages): void
+    public function setGenerateImages(bool $generateImages, string $imageSize): void
     {
         $this->generateImages = $generateImages;
+        $this->imageSize = $imageSize;
     }
 
 
@@ -309,7 +319,9 @@ class ProductGenerator
      */
     private function generateImage(string $productName, string $productDescription): string
     {
-        $url = $this->openAI->generateImage($productName . ' ' . $productDescription);
+        $prompt = $productName . ' ' . $productDescription;
+
+        $url = $this->openAI->generateImage($prompt, $this->imageSize);
 
         $tmpFile = tempnam(sys_get_temp_dir(), 'ai-product');
 

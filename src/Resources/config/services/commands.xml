@@ -6,8 +6,15 @@
 
     <services>
 
-        <service id="AIDemoData\Command\GenerateCommand">
+        <service id="AIDemoData\Command\ProductGenerateCommand">
             <argument type="service" id="AIDemoData\Service\Generator\ProductGenerator"/>
+            <argument type="service" id="AIDemoData\Service\Config\ConfigService"/>
+            <tag name="console.command"/>
+        </service>
+
+        <service id="AIDemoData\Command\MediaGenerateCommand">
+            <argument type="service" id="AIDemoData\Service\Generator\MediaGenerator"/>
+            <argument type="service" id="AIDemoData\Service\Config\ConfigService"/>
             <tag name="console.command"/>
         </service>
 
