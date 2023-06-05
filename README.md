@@ -18,6 +18,14 @@ This plugin is designed to generate demo data for Shopware 6 based on artificial
 You can download the stable ZIP file releases from Github.
 Just download the ZIP file and install it in the Shopware administration.
 
+### Composer Installation
+
+You can install the plugin using composer. Just navigate to your Shopware 6 project's root directory and run the following command:
+
+```ruby
+composer require boxblinkracer/shopware-ai-demodata
+```
+
 ### Manual Installation
 
 Clone this repository to your Shopware 6 project's custom/plugins directory.
