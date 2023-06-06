@@ -27,6 +27,11 @@ class ConfigService
      */
     private $mediaImageSize;
 
+    /**
+     * @var int
+     */
+    private $productDescriptionLength;
+
 
     /**
      * @param SystemConfigService $configService
@@ -39,6 +44,8 @@ class ConfigService
         $this->productImageSize = $configService->getString('AIDemoData.config.productImageSize');
 
         $this->mediaImageSize = $configService->getString('AIDemoData.config.mediaImageSize');
+
+        $this->productDescriptionLength = $configService->getInt('AIDemoData.config.productDescriptionLength');
     }
 
     /**
@@ -67,6 +74,18 @@ class ConfigService
         }
 
         return $this->productImageSize;
+    }
+
+    /**
+     * @return int
+     */
+    public function getProductDescriptionLength(): int
+    {
+        if (empty($this->productDescriptionLength)) {
+            return 400;
+        }
+
+        return (int)$this->productDescriptionLength;
     }
 
     /**

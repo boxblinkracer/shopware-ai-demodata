@@ -114,10 +114,11 @@ class ProductGenerator
      * @param string $keywords
      * @param int $maxCount
      * @param string $category
-     * @throws \Exception
+     * @param int $descriptionLength
+     * @throws \JsonException
      * @return void
      */
-    public function generate(string $keywords, int $maxCount, string $category)
+    public function generate(string $keywords, int $maxCount, string $category, int $descriptionLength)
     {
         $prompt = 'Create a list of demo products with these properties, separated values with ";". Only write down values and no property names ' . PHP_EOL;
         $prompt .= PHP_EOL;
@@ -127,7 +128,7 @@ class ProductGenerator
         $prompt .= 'product count.' . PHP_EOL;
         $prompt .= 'product number code. should be 16 unique random alphanumeric.' . PHP_EOL;
         $prompt .= 'name of the product.' . PHP_EOL;
-        $prompt .= 'description (about 400 characters).' . PHP_EOL;
+        $prompt .= 'description (about ' . $descriptionLength . ' characters).' . PHP_EOL;
         $prompt .= 'price value (no currency just number).' . PHP_EOL;
         $prompt .= 'EAN code.' . PHP_EOL;
         $prompt .= 'SEO description (max 100 characters).' . PHP_EOL;

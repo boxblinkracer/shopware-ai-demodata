@@ -7,6 +7,7 @@ using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
 ### Added
 
+- Added new option to define the approximate length of product descriptions.
 - Add new plugin configuration hint for OpenAI key that it starts with **sk_**. (thx @jissereitsma)
 - Added better error output for OpenAI requests. Sometimes the message is empty, but the error code can still be displayed. (thx @jissereitsma)
 

@@ -23,6 +23,13 @@
             <helpText>If enabled product images will be automatically generated if no CLI argument is provided.</helpText>
         </input-field>
 
+        <input-field type="int">
+            <name>productDescriptionLength</name>
+            <label>Description Length</label>
+            <defaultValue>400</defaultValue>
+            <helpText>The approximate target length of a product description text.</helpText>
+        </input-field>
+
         <input-field type="single-select">
             <name>productImageSize</name>
             <label>Size (px)</label>
