@@ -7,7 +7,7 @@
         <input-field type="password">
             <name>apiKey</name>
             <label>OpenAI Key</label>
-            <helpText>Enter your OpenAI Api key from https://platform.openai.com/account/api-keys</helpText>
+            <helpText>Enter your OpenAI Api key (starting with "sk-") from https://platform.openai.com/account/api-keys</helpText>
         </input-field>
 
     </card>
