@@ -49,7 +49,7 @@ class Client
         }
 
         if (isset($json['error'])) {
-            $msg = 'OpenAI Error: ' . $json['error']['message'];
+            $msg = 'OpenAI Error: ' . $json['error'] . '['.$json['code'].']';
             throw new \Exception($msg);
         }
 
