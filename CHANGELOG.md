@@ -3,6 +3,10 @@
 All notable changes of releases are documented in this file
 using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [unreleased]
+
+- Added new option **--saleschannel** to specify the SalesChannel when importing products and assign them to a category.
+
 ## [1.2.0]
 
 ### Added
