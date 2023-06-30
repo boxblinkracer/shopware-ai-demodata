@@ -126,7 +126,7 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
         }
 
         if ($salesChannel === '') {
-            $this->io->note('No sales channel given. Products will be added to fisrt storefront sales channel.');
+            $this->io->note('No sales channel given. Products will be added to first storefront sales channel.');
         } else {
             $this->io->note('Products will be added to sales channel: ' . $salesChannel);
         }
