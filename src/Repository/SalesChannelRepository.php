@@ -40,4 +40,15 @@ class SalesChannelRepository
             ->search($criteria, Context::createDefaultContext())
             ->first();
     }
+
+    public function getByName(string $name): SalesChannelEntity
+    {
+        $criteria = new Criteria();
+        $criteria->addFilter(new EqualsFilter('name', $name));
+        $criteria->setLimit(1);
+
+        return $this->repository
+            ->search($criteria, Context::createDefaultContext())
+            ->first();
+    }
 }

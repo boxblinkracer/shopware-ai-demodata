@@ -114,11 +114,12 @@ class ProductGenerator
      * @param string $keywords
      * @param int $maxCount
      * @param string $category
+     * @param string $salesChannel
      * @param int $descriptionLength
      * @throws \JsonException
      * @return void
      */
-    public function generate(string $keywords, int $maxCount, string $category, int $descriptionLength)
+    public function generate(string $keywords, int $maxCount, string $category, string $salesChannel, int $descriptionLength)
     {
         $prompt = 'Create a list of demo products with these properties, separated values with ";". Only write down values and no property names ' . PHP_EOL;
         $prompt .= PHP_EOL;
@@ -197,6 +198,7 @@ class ProductGenerator
                     $name,
                     $number,
                     $category,
+                    $salesChannel,
                     $description,
                     $price,
                     $tmpImageFile,
@@ -220,6 +222,7 @@ class ProductGenerator
      * @param string $name
      * @param string $number
      * @param string $categoryName
+     * @param string $salesChannelName
      * @param string $description
      * @param float $price
      * @param string $image
@@ -227,14 +230,18 @@ class ProductGenerator
      * @param string $metaDescription
      * @return void
      */
-    private function createProduct(string $id, string $name, string $number, string $categoryName, string $description, float $price, string $image, string $ean, string $metaDescription): void
+    private function createProduct(string $id, string $name, string $number, string $categoryName, string $salesChannelName, string $description, float $price, string $image, string $ean, string $metaDescription): void
     {
         # just reuse the product one ;)
         $mediaId = $id;
         $visibilityID = $id;
         $coverId = $id;
 
-        $salesChannel = $this->repoSalesChannel->getStorefrontSalesChannel();
+        if (!empty($salesChannelName)) {
+            $salesChannel = $this->repoSalesChannel->getByName($salesChannelName);
+        } else {
+            $salesChannel = $this->repoSalesChannel->getStorefrontSalesChannel();
+        }
         $tax = $this->repoTaxes->getTaxEntity(19);
         $currency = $this->repoCurrency->getCurrencyEuro();
 

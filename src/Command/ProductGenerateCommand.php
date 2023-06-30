@@ -64,6 +64,7 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
             ->addOption('count', null, InputOption::VALUE_REQUIRED, 'Number of products to generate')
             ->addOption('keywords', null, InputOption::VALUE_REQUIRED, 'Keywords to generate products for')
             ->addOption('category', null, InputOption::VALUE_REQUIRED, 'The name of your category in the Storefront to append the products to.')
+            ->addOption('saleschannel', null, InputOption::VALUE_REQUIRED, 'The name of your Storefront sales channel to add the products to.')
             ->addOption('images', null, InputOption::VALUE_REQUIRED, 'Indicates if images should be generated for the products.')
             ->addOption('images-size', null, InputOption::VALUE_REQUIRED, 'The width and height of product images in pixels. (wxh)');
     }
@@ -82,6 +83,7 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
         $count = $input->getOption('count');
         $keyWords = $input->getOption('keywords');
         $category = $input->getOption('category');
+        $salesChannel = $input->getOption('saleschannel');
         $withImages = $input->getOption('images');
         $imgSize = $input->getOption('images-size');
 
@@ -101,6 +103,10 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
             $category = '';
         }
 
+        if ($salesChannel === null) {
+            $salesChannel = '';
+        }
+
         if ($withImages === null) {
             $withImages = $this->configService->isProductImageEnabled();
         } else {
@@ -117,6 +123,12 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
             $this->io->note('No category given. Products will be generated without a category.');
         } else {
             $this->io->note('Products will be generated for category: ' . $category);
+        }
+
+        if ($salesChannel === '') {
+            $this->io->note('No sales channel given. Products will be added to fisrt storefront sales channel.');
+        } else {
+            $this->io->note('Products will be added to sales channel: ' . $salesChannel);
         }
 
         if ($withImages) {
@@ -143,6 +155,7 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
             $keyWords,
             $count,
             $category,
+            $salesChannel,
             $descriptionLength
         );
 
