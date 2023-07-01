@@ -10,6 +10,8 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\EntitySearchResult;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\ContainsFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Core\System\SalesChannel\SalesChannelCollection;
+use Shopware\Core\System\SalesChannel\SalesChannelEntity;
 
 class CategoryRepository
 {
@@ -70,13 +72,27 @@ class CategoryRepository
 
         /** @var CategoryEntity $category */
         foreach ($collection as $category) {
-            $path = $category->getPath();
+            $path = (string)$category->getPath();
             $paths = explode('|', $path);
+
+            if (count($paths) < 2) {
+                continue;
+            }
 
             $rootPath = $paths[1];
             $catRoot = $this->getById($rootPath);
 
-            $scID = $catRoot->getNavigationSalesChannels()->first()->getId();
+            $salesChannels = $catRoot->getNavigationSalesChannels();
+
+            if (!$salesChannels instanceof SalesChannelCollection) {
+                continue;
+            }
+
+            if ($salesChannels->count() <= 0) {
+                continue;
+            }
+
+            $scID = $salesChannels->first()->getId();
 
             if ($scID === $salesChannelId) {
                 return $category;
@@ -94,7 +110,7 @@ class CategoryRepository
     {
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('id', $id));
-        $criteria->setLimit(1); 
+        $criteria->setLimit(1);
 
         return $this->repository
             ->search($criteria, Context::createDefaultContext())
