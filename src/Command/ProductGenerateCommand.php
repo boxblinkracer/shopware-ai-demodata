@@ -2,6 +2,7 @@
 
 namespace AIDemoData\Command;
 
+use AIDemoData\Repository\CategoryRepository;
 use AIDemoData\Service\Config\ConfigService;
 use AIDemoData\Service\Generator\ProductGenerator;
 use AIDemoData\Service\Generator\ProductGeneratorInterface;
@@ -126,7 +127,7 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
         }
 
         if ($salesChannel === '') {
-            $this->io->note('No sales channel given. Products will be added to first storefront sales channel.');
+            $this->io->note('No sales channel given. Products will be added the first found storefront sales channel.');
         } else {
             $this->io->note('Products will be added to sales channel: ' . $salesChannel);
         }

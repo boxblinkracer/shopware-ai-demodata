@@ -10,6 +10,7 @@ use AIDemoData\Repository\TaxRepository;
 use AIDemoData\Service\Config\ConfigService;
 use AIDemoData\Service\Media\ImageUploader;
 use AIDemoData\Service\OpenAI\Client;
+use Shopware\Core\Content\Category\CategoryEntity;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\Uuid\Uuid;
 
@@ -303,7 +304,8 @@ class ProductGenerator
         ];
 
         if (!empty($categoryName)) {
-            $category = $this->repoCategory->getByName($categoryName);
+            $category = $this->repoCategory->getByNameAndSalesChannel($categoryName, $salesChannel->getId());
+
             $productData['categories'] = [
                 [
                     'id' => $category->getId(),

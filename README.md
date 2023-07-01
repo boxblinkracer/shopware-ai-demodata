@@ -71,13 +71,14 @@ php bin/console ai-demodata:generate:products --keywords=''
 php bin/console ai-demodata:generate:products --keywords='baseball gloves, right and left, leather, high quality' --count=2
 ```
 
-| Feature     | Argument      | Description                                                                                                                                                       |
-|-------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Keywords    | --keywords    | Specifies the keywords or topics related to the desired demo data. You can play around with these values to generate different demo data and improve your results |
-| Count       | --count       | Indicates the number of demo data entries to generate (default: 1)                                                                                                |
-| Category    | --category    | The optional name of the category if you would like to automatically assign the generated demo data to a category in the Storefront.                              |
-| Images      | --images      | Indicates whether the generated demo data should contain images (default: plugin-configuration)                                                                   |
-| Images Size | --images-size | Specifies a size for the images of allowed OpenAI sizes like 1024x1024, 512x512 (default: plugin-configuration)                                                   |
+| Feature       | Argument       | Description                                                                                                                                                       |
+|---------------|----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Keywords      | --keywords     | Specifies the keywords or topics related to the desired demo data. You can play around with these values to generate different demo data and improve your results |
+| Count         | --count        | Indicates the number of demo data entries to generate (default: 1)                                                                                                |
+| Category      | --category     | The optional name of the category if you would like to automatically assign the generated demo data to a category in the Storefront.                              |
+| Sales Channel | --saleschannel | If you provide a category, you can also provide the sales channel name in case you have multiple ones.                                                            |
+| Images        | --images       | Indicates whether the generated demo data should contain images (default: plugin-configuration)                                                                   |
+| Images Size   | --images-size  | Specifies a size for the images of allowed OpenAI sizes like 1024x1024, 512x512 (default: plugin-configuration)                                                   |
 
 After running the command, the plugin will use the specified keywords and AI technology to generate demo data based on your Shopware 6 shop's
 configured product structure.
