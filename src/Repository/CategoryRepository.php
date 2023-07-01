@@ -46,22 +46,9 @@ class CategoryRepository
 
     /**
      * @param string $name
-     * @return EntitySearchResult
-     */
-    public function getByName(string $name): EntitySearchResult
-    {
-        $criteria = new Criteria();
-        $criteria->addFilter(new EqualsFilter('name', $name));
-        $criteria->addAssociation('mainCategories');
-
-        return $this->repository->search($criteria, Context::createDefaultContext());
-    }
-
-    /**
-     * @param string $name
      * @param string $salesChannelId
-     * @throws \Exception
      * @return CategoryEntity
+     * @throws \Exception
      */
     public function getByNameAndSalesChannel(string $name, string $salesChannelId): CategoryEntity
     {
@@ -110,6 +97,7 @@ class CategoryRepository
     {
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('id', $id));
+        $criteria->addAssociation('navigationSalesChannels');
         $criteria->setLimit(1);
 
         return $this->repository
