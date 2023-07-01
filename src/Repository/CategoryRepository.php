@@ -47,8 +47,8 @@ class CategoryRepository
     /**
      * @param string $name
      * @param string $salesChannelId
-     * @return CategoryEntity
      * @throws \Exception
+     * @return CategoryEntity
      */
     public function getByNameAndSalesChannel(string $name, string $salesChannelId): CategoryEntity
     {
