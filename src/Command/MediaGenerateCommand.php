@@ -87,7 +87,7 @@ class MediaGenerateCommand extends Command implements MediaGeneratorInterface
 
         # -----------------------------------------------------------------------------------------------------------------------
 
-        if ($count === false) {
+        if ($count === false || $count === null) {
             $count = 1;
         }
 

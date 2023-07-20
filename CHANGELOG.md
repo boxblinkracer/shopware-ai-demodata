@@ -7,6 +7,7 @@ using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
 ### Fixed
 
+- Fix problem where the default value of the "--count" argument did not work. So it was not possible to skip it.
 - Fix problem where the plugin always threw an exception if no API key was provided, even if other commands would have been called.
 
 ## [1.3.0]

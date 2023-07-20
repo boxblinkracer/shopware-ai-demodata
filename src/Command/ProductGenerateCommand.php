@@ -96,7 +96,8 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
 
         # -----------------------------------------------------------------------------------------------------------------------
 
-        if ($count === false) {
+
+        if ($count === false || $count === null) {
             $count = 1;
         }
 
