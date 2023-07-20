@@ -3,6 +3,12 @@
 All notable changes of releases are documented in this file
 using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [unreleased]
+
+### Fixed
+
+- Fix problem where the plugin always threw an exception if no API key was provided, even if other commands would have been called.
+
 ## [1.3.0]
 
 - Added new option **--saleschannel** to specify the SalesChannel when importing products and assign them to a category. (thx @schliesser)

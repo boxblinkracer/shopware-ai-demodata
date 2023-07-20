@@ -29,10 +29,6 @@ class Factory
     {
         $apiKey = $this->configService->getOpenAiKey();
 
-        if (empty($apiKey)) {
-            throw new \Exception('No API Key found in plugin configuration. Please provide your key');
-        }
-
         return new Client($apiKey);
     }
 }

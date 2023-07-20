@@ -8,6 +8,11 @@ class Client
 {
 
     /**
+     * @var string
+     */
+    private string $apiKey;
+
+    /**
      * @var OpenAi
      */
     private $openAi;
@@ -18,7 +23,7 @@ class Client
      */
     public function __construct(string $apiKey)
     {
-        $this->openAi = new OpenAi($apiKey);
+        $this->apiKey = $apiKey;
     }
 
 
@@ -29,6 +34,13 @@ class Client
      */
     public function generateText(string $prompt): Choice
     {
+        if (empty($this->apiKey)) {
+            throw new \Exception('No API Key found in plugin configuration. Please provide your key');
+        }
+
+        $this->openAi = new OpenAi($this->apiKey);
+
+
         $params = [
             'model' => "text-davinci-003",
             'prompt' => $prompt,
@@ -82,6 +94,13 @@ class Client
      */
     public function generateImage(string $prompt, string $size): string
     {
+        if (empty($this->apiKey)) {
+            throw new \Exception('No API Key found in plugin configuration. Please provide your key');
+        }
+
+        $this->openAi = new OpenAi($this->apiKey);
+
+
         $complete = $this->openAi->image([
             "prompt" => $prompt,
             "n" => 1,
@@ -110,6 +129,12 @@ class Client
      */
     public function askChatGPT(string $prompt): Choice
     {
+        if (empty($this->apiKey)) {
+            throw new \Exception('No API Key found in plugin configuration. Please provide your key');
+        }
+
+        $this->openAi = new OpenAi($this->apiKey);
+
         $params = [
             'model' => "gpt-3.5-turbo",
             'messages' => [
