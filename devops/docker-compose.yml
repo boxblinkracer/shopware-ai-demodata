@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
   shop:
-    image: dockware/dev:6.5.2.1
+    image: dockware/dev:6.5.3.3
     container_name: shopware
     volumes:
       - "../:/var/www/html/custom/plugins/AIDemoData"
