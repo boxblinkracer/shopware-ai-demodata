@@ -1,7 +1,7 @@
 {
   "name": "boxblinkracer/shopware-ai-demodata",
   "description": "AI Demo Data",
-  "version": "v1.3.1",
+  "version": "v1.4.0",
   "type": "shopware-platform-plugin",
   "license": "MIT",
   "extra": {
