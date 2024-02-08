@@ -7,7 +7,8 @@ using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
 ### Changed
 
-- Changed AI model to **gpt-3.5-turbo-instruct**. The old one is now deprecated in OpenAI.
+- Upgraded Image generation model to **dall-e-3** with better results and higher image size options.
+- Changed deprecated model gpt-3.5-turbo to the new **gpt-3.5-turbo-instruct**.
 
 ## [1.3.1]
 

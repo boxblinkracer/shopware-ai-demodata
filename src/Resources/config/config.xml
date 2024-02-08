@@ -40,12 +40,12 @@
                     <name>1024x1024</name>
                 </option>
                 <option>
-                    <id>256x256</id>
-                    <name>256x256</name>
+                    <id>1792x1024</id>
+                    <name>1792x1024</name>
                 </option>
                 <option>
-                    <id>512x512</id>
-                    <name>512x512</name>
+                    <id>1024x1792</id>
+                    <name>1024x1792</name>
                 </option>
             </options>
         </input-field>

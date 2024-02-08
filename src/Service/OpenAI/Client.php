@@ -100,8 +100,8 @@ class Client
 
         $this->openAi = new OpenAi($this->apiKey);
 
-
         $complete = $this->openAi->image([
+            "model" => "dall-e-3",
             "prompt" => $prompt,
             "n" => 1,
             "size" => $size,
