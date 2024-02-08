@@ -42,7 +42,7 @@ class Client
 
 
         $params = [
-            'model' => "text-davinci-003",
+            'model' => "gpt-3.5-turbo-instruct",
             'prompt' => $prompt,
             'temperature' => 0.3,
             'max_tokens' => 1000,
@@ -136,7 +136,7 @@ class Client
         $this->openAi = new OpenAi($this->apiKey);
 
         $params = [
-            'model' => "gpt-3.5-turbo",
+            'model' => "gpt-3.5-turbo-instruct",
             'messages' => [
                 ['role' => 'user', 'content' => $prompt],
             ],

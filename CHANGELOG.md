@@ -3,6 +3,12 @@
 All notable changes of releases are documented in this file
 using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [unreleased]
+
+### Changed
+
+- Changed AI model to **gpt-3.5-turbo-instruct**. The old one is now deprecated in OpenAI.
+
 ## [1.3.1]
 
 ### Fixed
