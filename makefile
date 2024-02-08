@@ -6,36 +6,49 @@
 .DEFAULT_GOAL := help
 
 help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@echo ""
+	@echo "PROJECT COMMANDS"
+	@echo "--------------------------------------------------------------------------------------------"
+	@printf "\033[33mInstallation:%-30s\033[0m %s\n"
+	@grep -E '^[a-zA-Z_-]+:.*?##1 .*$$' $(firstword $(MAKEFILE_LIST)) | awk 'BEGIN {FS = ":.*?##1 "}; {printf "\033[33m  - %-30s\033[0m %s\n", $$1, $$2}'
+	@echo "--------------------------------------------------------------------------------------------"
+	@printf "\033[36mDevelopment:%-30s\033[0m %s\n"
+	@grep -E '^[a-zA-Z_-]+:.*?##2 .*$$' $(firstword $(MAKEFILE_LIST)) | awk 'BEGIN {FS = ":.*?##2 "}; {printf "\033[36m  - %-30s\033[0m %s\n", $$1, $$2}'
+	@echo "--------------------------------------------------------------------------------------------"
+	@printf "\033[32mTests:%-30s\033[0m %s\n"
+	@grep -E '^[a-zA-Z_-]+:.*?##3 .*$$' $(firstword $(MAKEFILE_LIST)) | awk 'BEGIN {FS = ":.*?##3 "}; {printf "\033[32m  - %-30s\033[0m %s\n", $$1, $$2}'
+	@echo "--------------------------------------------------------------------------------------------"
+	@printf "\033[35mDevOps:%-30s\033[0m %s\n"
+	@grep -E '^[a-zA-Z_-]+:.*?##4 .*$$' $(firstword $(MAKEFILE_LIST)) | awk 'BEGIN {FS = ":.*?##4 "}; {printf "\033[35m  - %-30s\033[0m %s\n", $$1, $$2}'
 
 # ------------------------------------------------------------------------------------------------------------
 
-prod: ## Installs all production dependencies
+prod: ## 1 Installs all production dependencies
 	composer install --no-dev
 
-dev: ## Installs all dev dependencies
+dev: ##1 Installs all dev dependencies
 	composer install
 
-clean: ## Clears all dependencies
+clean: ##1 Clears all dependencies
 	rm -rf vendor/*
 
 # ------------------------------------------------------------------------------------------------------------
 
-phpcheck: ## Starts the PHP syntax checks
+phpcheck: ##3 Starts the PHP syntax checks
 	@find . -name '*.php' -not -path "./vendor/*" -not -path "./tests/*" | xargs -n 1 -P4 php -l
 
-csfix: ## Starts the PHP CS Fixer
+csfix: ##3 Starts the PHP CS Fixer
 	@PHP_CS_FIXER_IGNORE_ENV=1 php vendor/bin/php-cs-fixer fix --config=./.php_cs.php --dry-run
 
-stan: ## Starts the PHPStan Analyser
+stan: ##3 Starts the PHPStan Analyser
 	@php vendor/bin/phpstan analyse -c ./.phpstan.neon
 
-phpunit: ## Starts all PHPUnit Tests
+phpunit: ##3 Starts all PHPUnit Tests
 	@XDEBUG_MODE=coverage php vendor/bin/phpunit --configuration=phpunit.xml --coverage-html ./.reports/phpunit/coverage
 
 # ------------------------------------------------------------------------------------------------------------
 
-pr: ## Prepares everything for a Pull Request
+pr: ##2 Prepares everything for a Pull Request
 	@PHP_CS_FIXER_IGNORE_ENV=1 php vendor/bin/php-cs-fixer fix --config=./.php_cs.php
 	@make phpcheck -B
 	@make stan -B
@@ -43,7 +56,7 @@ pr: ## Prepares everything for a Pull Request
 
 # ------------------------------------------------------------------------------------------------------------
 
-release: ## Builds a PROD version and creates a ZIP file in plugins/.build.
+release: ##4 Builds a PROD version and creates a ZIP file in plugins/.build.
 	make clean
 	make prod
 	mkdir -p ./.build
