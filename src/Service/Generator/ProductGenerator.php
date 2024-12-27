@@ -71,6 +71,10 @@ class ProductGenerator
      */
     private $imageSize;
 
+    /**
+     * @var string
+     */
+    private $kernelCacheDir;
 
     /**
      * @param Client $client
@@ -81,7 +85,7 @@ class ProductGenerator
      * @param CategoryRepository $repoCategory
      * @param ImageUploader $imageUploader
      */
-    public function __construct(Client $client, ProductRepository $repoProducts, TaxRepository $repoTaxes, SalesChannelRepository $repoSalesChannel, CurrencyRepository $repoCurrency, CategoryRepository $repoCategory, PropertyRepository $repoPropertyGroup, ImageUploader $imageUploader)
+    public function __construct(Client $client, ProductRepository $repoProducts, TaxRepository $repoTaxes, SalesChannelRepository $repoSalesChannel, CurrencyRepository $repoCurrency, CategoryRepository $repoCategory, PropertyRepository $repoPropertyGroup, ImageUploader $imageUploader, string $kernelCacheDir)
     {
         $this->openAI = $client;
         $this->repoProducts = $repoProducts;
@@ -91,6 +95,7 @@ class ProductGenerator
         $this->repoCategory = $repoCategory;
         $this->repoProperties = $repoPropertyGroup;
         $this->imageUploader = $imageUploader;
+        $this->kernelCacheDir = $kernelCacheDir;
 
         $this->generateImages = true;
     }
@@ -154,9 +159,15 @@ class ProductGenerator
         $prompt .= 'The industry of the products should be: ' . $keywords;
 
 
+        # now write our prompt to the cache dir
+        file_put_contents($this->kernelCacheDir . '/../ai-demodata-product-prompt.txt', $prompt);
+
         $choice = $this->openAI->generateText($prompt);
 
         $text = $choice->getText();
+
+        # save our response in the cache dir
+        file_put_contents($this->kernelCacheDir . '/../ai-demodata-product-response.txt', $text);
 
         $currentCount = 0;
 

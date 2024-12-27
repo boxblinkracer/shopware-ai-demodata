@@ -26,6 +26,7 @@
             <argument type="service" id="AIDemoData\Repository\CategoryRepository"/>
             <argument type="service" id="AIDemoData\Repository\PropertyRepository"/>
             <argument type="service" id="AIDemoData\Service\Media\ImageUploader"/>
+            <argument>%kernel.cache_dir%</argument>
         </service>
 
         <service id="AIDemoData\Service\Generator\MediaGenerator" class="AIDemoData\Service\Generator\MediaGenerator">
