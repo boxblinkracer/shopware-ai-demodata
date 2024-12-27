@@ -3,6 +3,13 @@
 All notable changes of releases are documented in this file
 using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [unreleased]
+
+### Changed
+
+- Upgrade composer lock to support Shopware 6.6.9.0
+
+
 ## [1.4.0]
 
 ### Changed
