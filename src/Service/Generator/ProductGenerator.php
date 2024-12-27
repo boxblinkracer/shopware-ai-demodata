@@ -5,12 +5,11 @@ namespace AIDemoData\Service\Generator;
 use AIDemoData\Repository\CategoryRepository;
 use AIDemoData\Repository\CurrencyRepository;
 use AIDemoData\Repository\ProductRepository;
+use AIDemoData\Repository\PropertyRepository;
 use AIDemoData\Repository\SalesChannelRepository;
 use AIDemoData\Repository\TaxRepository;
-use AIDemoData\Service\Config\ConfigService;
 use AIDemoData\Service\Media\ImageUploader;
 use AIDemoData\Service\OpenAI\Client;
-use Shopware\Core\Content\Category\CategoryEntity;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\Uuid\Uuid;
 
@@ -48,6 +47,11 @@ class ProductGenerator
     private $repoCategory;
 
     /**
+     * @var PropertyRepository
+     */
+    private $repoProperties;
+
+    /**
      * @var ImageUploader
      */
     private $imageUploader;
@@ -77,7 +81,7 @@ class ProductGenerator
      * @param CategoryRepository $repoCategory
      * @param ImageUploader $imageUploader
      */
-    public function __construct(Client $client, ProductRepository $repoProducts, TaxRepository $repoTaxes, SalesChannelRepository $repoSalesChannel, CurrencyRepository $repoCurrency, CategoryRepository $repoCategory, ImageUploader $imageUploader)
+    public function __construct(Client $client, ProductRepository $repoProducts, TaxRepository $repoTaxes, SalesChannelRepository $repoSalesChannel, CurrencyRepository $repoCurrency, CategoryRepository $repoCategory, PropertyRepository $repoPropertyGroup, ImageUploader $imageUploader)
     {
         $this->openAI = $client;
         $this->repoProducts = $repoProducts;
@@ -85,6 +89,7 @@ class ProductGenerator
         $this->repoSalesChannel = $repoSalesChannel;
         $this->repoCurrency = $repoCurrency;
         $this->repoCategory = $repoCategory;
+        $this->repoProperties = $repoPropertyGroup;
         $this->imageUploader = $imageUploader;
 
         $this->generateImages = true;
@@ -120,8 +125,16 @@ class ProductGenerator
      * @throws \JsonException
      * @return void
      */
-    public function generate(string $keywords, int $maxCount, string $category, string $salesChannel, int $descriptionLength)
+    public function generate(string $keywords, int $maxCount, string $category, string $salesChannel, int $descriptionLength, string $variantPropertyGroupId)
     {
+        if (empty($keywords)) {
+            throw new \Exception('No keywords provided. Please tell the plugin what to generate.');
+        }
+
+        if (empty($variantPropertyGroupId)) {
+            throw new \Exception('No variant property group provided. Please open the plugin configuration and configure what property group to use when generating variants!');
+        }
+
         $prompt = 'Create a list of demo products with these properties, separated values with ";". Only write down values and no property names ' . PHP_EOL;
         $prompt .= PHP_EOL;
         $prompt .= 'the following properties should be generated.' . PHP_EOL;
@@ -134,8 +147,9 @@ class ProductGenerator
         $prompt .= 'price value (no currency just number).' . PHP_EOL;
         $prompt .= 'EAN code.' . PHP_EOL;
         $prompt .= 'SEO description (max 100 characters).' . PHP_EOL;
+        $prompt .= 'variant indicator (1 if variants make sense for the product, 0 if it does not make sense).' . PHP_EOL;
         $prompt .= PHP_EOL;
-        $prompt .= 'Please only create this number of products: ' . $maxCount . PHP_EOL;
+        $prompt .= 'Please only create exactly this number of products: ' . $maxCount . PHP_EOL;
         $prompt .= PHP_EOL;
         $prompt .= 'The industry of the products should be: ' . $keywords;
 
@@ -143,7 +157,6 @@ class ProductGenerator
         $choice = $this->openAI->generateText($prompt);
 
         $text = $choice->getText();
-
 
         $currentCount = 0;
 
@@ -169,6 +182,7 @@ class ProductGenerator
                 $price = (string)$parts[4];
                 $ean = (string)$parts[5];
                 $metaDescription = (string)$parts[6];
+                $isVariant = (bool)$parts[7];
 
                 if (empty($name)) {
                     continue;
@@ -204,13 +218,18 @@ class ProductGenerator
                     $price,
                     $tmpImageFile,
                     $ean,
-                    $metaDescription
+                    $metaDescription,
+                    $isVariant,
+                    $variantPropertyGroupId
                 );
 
                 if ($this->callback !== null) {
                     $this->callback->onProductGenerated($number, $name, $currentCount, $maxCount);
                 }
             } catch (\Exception $ex) {
+                var_dump($ex->getMessage());
+                var_dump($ex->getTraceAsString());
+
                 if ($this->callback !== null) {
                     $this->callback->onProductGenerationFailed($ex->getMessage(), $currentCount, $maxCount);
                 }
@@ -229,9 +248,12 @@ class ProductGenerator
      * @param string $image
      * @param string $ean
      * @param string $metaDescription
+     * @param bool $isColorVariant
+     * @param string $variantPropertyGroupId
+     * @throws \Exception
      * @return void
      */
-    private function createProduct(string $id, string $name, string $number, string $categoryName, string $salesChannelName, string $description, float $price, string $image, string $ean, string $metaDescription): void
+    private function createProduct(string $id, string $name, string $number, string $categoryName, string $salesChannelName, string $description, float $price, string $image, string $ean, string $metaDescription, bool $isColorVariant, string $variantPropertyGroupId): void
     {
         # just reuse the product one ;)
         $mediaId = $id;
@@ -301,6 +323,8 @@ class ProductGenerator
                 ]
             ],
             'coverId' => $coverId,
+            'options' => [],
+            'properties' => []
         ];
 
         if (!empty($categoryName)) {
@@ -313,12 +337,47 @@ class ProductGenerator
             ];
         }
 
+        $colors = $this->repoProperties->findOptions($variantPropertyGroupId);
+
+        if ($isColorVariant) {
+            foreach ($colors as $color) {
+                $productData['configuratorSettings'][] = [
+                    "optionId" => $color->getId(),
+                ];
+            }
+        }
+
         $this->repoProducts->upsert(
             [
                 $productData
             ],
             Context::createDefaultContext()
         );
+
+        if ($isColorVariant) {
+            $variantData = [];
+            $variantCount = 1;
+
+            foreach ($colors as $color) {
+                $variantData[] = [
+                    "parentId" => $id,
+                    "productNumber" => $number . '.' . $variantCount,
+                    "productStates" => [],
+                    "stock" => 99,
+                    "downloads" => [],
+                    "options" => [
+                        [
+                            "id" => $color->getId(),
+                            "entity" => $color,
+                        ]
+                    ]
+                ];
+
+                $variantCount++;
+            }
+
+            $this->repoProducts->upsert($variantData, Context::createDefaultContext());
+        }
     }
 
     /**
@@ -337,17 +396,12 @@ class ProductGenerator
 
         $ch = curl_init($url);
 
-        /* @phpstan-ignore-next-line */
+        /** @var resource $fp */
         $fp = fopen($tmpFile, 'wb');
-        /* @phpstan-ignore-next-line */
         curl_setopt($ch, CURLOPT_FILE, $fp);
-        /* @phpstan-ignore-next-line */
         curl_setopt($ch, CURLOPT_HEADER, 0);
-        /* @phpstan-ignore-next-line */
         curl_exec($ch);
-        /* @phpstan-ignore-next-line */
         curl_close($ch);
-        /* @phpstan-ignore-next-line */
         fclose($fp);
 
         return (string)$tmpFile;

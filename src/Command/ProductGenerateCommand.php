@@ -158,7 +158,8 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
             $count,
             $category,
             $salesChannel,
-            $descriptionLength
+            $descriptionLength,
+            $this->configService->getProductVariantPropertyGroupId()
         );
 
         if ($this->errorCount <= 0) {

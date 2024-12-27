@@ -109,17 +109,12 @@ class MediaGenerator
 
         $ch = curl_init($url);
 
-        /* @phpstan-ignore-next-line */
+        /** @var resource $fp */
         $fp = fopen($tmpFile, 'wb');
-        /* @phpstan-ignore-next-line */
         curl_setopt($ch, CURLOPT_FILE, $fp);
-        /* @phpstan-ignore-next-line */
         curl_setopt($ch, CURLOPT_HEADER, 0);
-        /* @phpstan-ignore-next-line */
         curl_exec($ch);
-        /* @phpstan-ignore-next-line */
         curl_close($ch);
-        /* @phpstan-ignore-next-line */
         fclose($fp);
 
         return (string)$tmpFile;

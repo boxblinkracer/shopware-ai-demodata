@@ -16,13 +16,6 @@
     <card>
         <title>Products</title>
 
-        <input-field type="bool">
-            <name>productImageEnabled</name>
-            <label>Product Images</label>
-            <defaultValue>true</defaultValue>
-            <helpText>If enabled product images will be automatically generated if no CLI argument is provided.</helpText>
-        </input-field>
-
         <input-field type="int">
             <name>productDescriptionLength</name>
             <label>Description Length</label>
@@ -30,9 +23,23 @@
             <helpText>The approximate target length of a product description text.</helpText>
         </input-field>
 
+        <component name="sw-entity-single-select">
+            <name>productVariantPropertyGroup</name>
+            <label>Property for Product Variants</label>
+            <helpText>Select the property group that will be used when creating variant products</helpText>
+            <entity>property_group</entity>
+        </component>
+
+        <input-field type="bool">
+            <name>productImageEnabled</name>
+            <label>Generate Product Images</label>
+            <defaultValue>true</defaultValue>
+            <helpText>If enabled product images will be automatically generated if no CLI argument is provided.</helpText>
+        </input-field>
+
         <input-field type="single-select">
             <name>productImageSize</name>
-            <label>Size (px)</label>
+            <label>Image Size (px)</label>
             <defaultValue>1024x1024</defaultValue>
             <options>
                 <option>
@@ -58,7 +65,7 @@
 
         <input-field type="single-select">
             <name>mediaImageSize</name>
-            <label>Size (px)</label>
+            <label>Image Size (px)</label>
             <defaultValue>1024x1024</defaultValue>
             <options>
                 <option>

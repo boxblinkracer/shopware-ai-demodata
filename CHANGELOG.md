@@ -5,10 +5,13 @@ using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
 ## [unreleased]
 
+### Added
+
+- Add brand new option to generate **product variants**. Configure what property group to use, and AI will automatically generate all variants, if appropriate for the product.
+
 ### Changed
 
-- Upgrade composer lock to support Shopware 6.6.9.0
-
+- Support for Shopware 6.6.9.0
 
 ## [1.4.0]
 

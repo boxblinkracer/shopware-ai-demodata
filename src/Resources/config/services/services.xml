@@ -24,6 +24,7 @@
             <argument type="service" id="AIDemoData\Repository\SalesChannelRepository"/>
             <argument type="service" id="AIDemoData\Repository\CurrencyRepository"/>
             <argument type="service" id="AIDemoData\Repository\CategoryRepository"/>
+            <argument type="service" id="AIDemoData\Repository\PropertyRepository"/>
             <argument type="service" id="AIDemoData\Service\Media\ImageUploader"/>
         </service>
 

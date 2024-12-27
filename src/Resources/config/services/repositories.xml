@@ -26,5 +26,9 @@
             <argument type="service" id="product.repository"/>
         </service>
 
+        <service id="AIDemoData\Repository\PropertyRepository" class="AIDemoData\Repository\PropertyRepository">
+            <argument type="service" id="property_group_option.repository"/>
+        </service>
+
     </services>
 </container>

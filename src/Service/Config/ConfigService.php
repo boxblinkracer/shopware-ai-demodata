@@ -32,6 +32,11 @@ class ConfigService
      */
     private $productDescriptionLength;
 
+    /**
+     * @var string
+     */
+    private $productVariantPropertyGroup;
+
 
     /**
      * @param SystemConfigService $configService
@@ -46,6 +51,8 @@ class ConfigService
         $this->mediaImageSize = $configService->getString('AIDemoData.config.mediaImageSize');
 
         $this->productDescriptionLength = $configService->getInt('AIDemoData.config.productDescriptionLength');
+
+        $this->productVariantPropertyGroup = $configService->getString('AIDemoData.config.productVariantPropertyGroup');
     }
 
     /**
@@ -62,6 +69,14 @@ class ConfigService
     public function isProductImageEnabled(): bool
     {
         return $this->productImageEnabled;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductVariantPropertyGroupId(): string
+    {
+        return $this->productVariantPropertyGroup;
     }
 
     /**
