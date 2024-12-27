@@ -127,6 +127,10 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
 
         $rows = [];
 
+
+        $rows[] = ['Text Model', $this->configService->getOpenAiTextModel()];
+        $rows[] = ['Image Model', $this->configService->getOpenAiImageModel()];
+
         if ($category === '') {
             $rows[] = ['Category', '-'];
         } else {

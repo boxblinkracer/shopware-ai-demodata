@@ -8,9 +8,11 @@ using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 ### Added
 
 - Add brand new option to generate **product variants**. Configure what property group to use, and AI will automatically generate all variants, if appropriate for the product.
-- Add 2 files in the cache directory for the generated prompt and response of product generation requests.
+- Add option to select what OpenAI text and image models should be used for generation
+- Add support fort GPT 4 models.
 - Add new product image styles. Open the plugin configuration an select what styles to use for the product images.
-- Add new outout of **estimated price** for the generated data.
+- Add new output of **estimated price** for the generated data.
+- Add 2 files in the cache directory for the generated prompt and response of product generation requests.
 
 ### Changed
 

@@ -17,13 +17,27 @@ class Client
      */
     private $openAi;
 
+    /**
+     * @var string
+     */
+    private $textModel;
+
+    /**
+     * @var string
+     */
+    private $imageModel;
+
 
     /**
      * @param string $apiKey
+     * @param string $textModel
+     * @param string $imageModel
      */
-    public function __construct(string $apiKey)
+    public function __construct(string $apiKey, string $textModel, string $imageModel)
     {
         $this->apiKey = $apiKey;
+        $this->textModel = $textModel;
+        $this->imageModel = $imageModel;
     }
 
 
@@ -40,11 +54,12 @@ class Client
 
         $this->openAi = new OpenAi($this->apiKey);
 
-        $model = 'gpt-3.5-turbo-instruct';
-
         $params = [
-            'model' => $model,
-            'prompt' => $prompt,
+            'model' => $this->textModel,
+            'messages' => [
+                ['role' => 'system', 'content' => 'You are a helpful assistant and a professional when it comes to e-commerce data'],
+                ['role' => 'user', 'content' => $prompt]
+            ],
             'temperature' => 0.3,
             'max_tokens' => 1000,
             'top_p' => 1.0,
@@ -53,7 +68,7 @@ class Client
         ];
 
 
-        $complete = (string)$this->openAi->completion($params);
+        $complete = (string)$this->openAi->chat($params);
 
         $json = json_decode($complete, true, 512, JSON_THROW_ON_ERROR);
 
@@ -66,7 +81,7 @@ class Client
             throw new \Exception($msg);
         }
 
-        $this->trackTextCosts($prompt, $json, $model);
+        $this->trackTextCosts($prompt, $json, $this->textModel);
 
         if (!isset($json['choices'])) {
             throw new \Exception('No choices found in OpenAI response.');
@@ -78,13 +93,13 @@ class Client
             return new Choice('');
         }
 
-        if (!isset($choices[0]['text'])) {
+        if (!isset($choices[0]['message']['content'])) {
             return new Choice('');
         }
 
         $choiceData = $choices[0];
 
-        $text = trim($choiceData['text']);
+        $text = trim($choiceData['message']['content']); // Extract the content from the response
 
         return new Choice($text);
     }
@@ -103,10 +118,8 @@ class Client
 
         $this->openAi = new OpenAi($this->apiKey);
 
-        $model = "dall-e-3";
-
         $complete = $this->openAi->image([
-            "model" => $model,
+            "model" => $this->imageModel,
             "prompt" => $prompt,
             "n" => 1,
             "size" => $size,
@@ -149,7 +162,7 @@ class Client
             return;
         }
 
-        $pricingData = json_decode((string)file_get_contents(__DIR__ . '/pricing.json'), true);
+        $pricingData = json_decode((string)file_get_contents(__DIR__ . '/../../Resources/pricing.json'), true);
 
         if (!isset($pricingData[$model])) {
             OpenAIUsageTracker::getInstance()->addMissingPrices($prompt, $model);

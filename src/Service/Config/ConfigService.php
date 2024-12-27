@@ -13,6 +13,16 @@ class ConfigService
     private $openAiKey;
 
     /**
+     * @var string
+     */
+    private $openAiTextModel;
+
+    /**
+     * @var string
+     */
+    private $openAiImageModel;
+
+    /**
      * @var bool
      */
     private $productImageEnabled;
@@ -49,6 +59,8 @@ class ConfigService
     public function __construct(SystemConfigService $configService)
     {
         $this->openAiKey = $configService->getString('AIDemoData.config.apiKey');
+        $this->openAiTextModel = $configService->getString('AIDemoData.config.apiTextModel');
+        $this->openAiImageModel = $configService->getString('AIDemoData.config.apiImageModel');
 
         $this->productImageEnabled = $configService->getBool('AIDemoData.config.productImageEnabled');
         $this->productImageSize = $configService->getString('AIDemoData.config.productImageSize');
@@ -70,6 +82,24 @@ class ConfigService
     public function getOpenAiKey(): string
     {
         return $this->openAiKey;
+    }
+
+    public function getOpenAiTextModel(): string
+    {
+        if (empty($this->openAiTextModel)) {
+            return 'gpt-3.5-turbo';
+        }
+
+        return $this->openAiTextModel;
+    }
+
+    public function getOpenAiImageModel(): string
+    {
+        if (empty($this->openAiImageModel)) {
+            return 'dall-e-3';
+        }
+
+        return $this->openAiImageModel;
     }
 
     /**

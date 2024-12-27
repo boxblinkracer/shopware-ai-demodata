@@ -10,6 +10,42 @@
             <helpText>Enter your OpenAI Api key (starting with "sk-") from https://platform.openai.com/account/api-keys</helpText>
         </input-field>
 
+        <input-field type="single-select">
+            <name>apiTextModel</name>
+            <label>Text Model</label>
+            <defaultValue>gpt-3.5-turbo-instruct</defaultValue>
+            <options>
+                <option>
+                    <id>gpt-4-turbo</id>
+                    <name>gpt-4-turbo</name>
+                </option>
+                <option>
+                    <id>gpt-4</id>
+                    <name>gpt-4</name>
+                </option>
+                <option>
+                    <id>gpt-3.5-turbo</id>
+                    <name>gpt-3.5-turbo</name>
+                </option>
+            </options>
+        </input-field>
+
+        <input-field type="single-select">
+            <name>apiImageModel</name>
+            <label>Image Model</label>
+            <defaultValue>dall-e-3</defaultValue>
+            <options>
+                <option>
+                    <id>dall-e-3</id>
+                    <name>dall-e-3</name>
+                </option>
+                <option>
+                    <id>dall-e-2</id>
+                    <name>dall-e-2</name>
+                </option>
+            </options>
+        </input-field>
+
     </card>
 
 

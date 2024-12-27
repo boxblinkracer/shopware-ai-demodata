@@ -2,7 +2,6 @@
 
 namespace AIDemoData\Service\OpenAI;
 
-use AIDemoData\Component\OpenAI\OpenAI;
 use AIDemoData\Service\Config\ConfigService;
 
 class Factory
@@ -28,7 +27,9 @@ class Factory
     public function create(): Client
     {
         $apiKey = $this->configService->getOpenAiKey();
+        $textModel = $this->configService->getOpenAiTextModel();
+        $imageModel = $this->configService->getOpenAiImageModel();
 
-        return new Client($apiKey);
+        return new Client($apiKey, $textModel, $imageModel);
     }
 }
