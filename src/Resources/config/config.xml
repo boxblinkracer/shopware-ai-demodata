@@ -16,12 +16,12 @@
             <defaultValue>gpt-3.5-turbo-instruct</defaultValue>
             <options>
                 <option>
-                    <id>gpt-4-turbo</id>
-                    <name>gpt-4-turbo</name>
-                </option>
-                <option>
                     <id>gpt-4</id>
                     <name>gpt-4</name>
+                </option>
+                <option>
+                    <id>gpt-4-turbo</id>
+                    <name>gpt-4-turbo</name>
                 </option>
                 <option>
                     <id>gpt-3.5-turbo</id>
