@@ -197,6 +197,11 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
     }
 
 
+    public function onProductGenerationStarted(int $productCount): void
+    {
+        $this->io->section('Sending request to OpenAI...waiting for response with ' . $productCount . ' generated products');
+    }
+
     /**
      * @param string $number
      * @param string $name

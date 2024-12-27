@@ -142,6 +142,11 @@ class ProductGenerator
             throw new \Exception('No variant property group provided. Please open the plugin configuration and configure what property group to use when generating variants!');
         }
 
+
+        if ($this->callback !== null) {
+            $this->callback->onProductGenerationStarted($maxCount);
+        }
+
         $prompt = 'Create a list of demo products with these properties, separated values with ";". Only write down values and no property names ' . PHP_EOL;
         $prompt .= PHP_EOL;
         $prompt .= 'the following properties should be generated.' . PHP_EOL;

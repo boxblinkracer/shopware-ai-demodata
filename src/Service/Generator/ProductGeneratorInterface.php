@@ -6,6 +6,12 @@ interface ProductGeneratorInterface
 {
 
     /**
+     * @param int $productCount
+     * @return void
+     */
+    public function onProductGenerationStarted(int $productCount): void;
+
+    /**
      * @param string $number
      * @param string $name
      * @param int $count
