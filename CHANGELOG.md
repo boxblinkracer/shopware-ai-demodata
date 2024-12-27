@@ -3,6 +3,13 @@
 All notable changes of releases are documented in this file
 using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [unreleased]
+
+### Fixed
+
+- Fix broken default configuration for text models
+- Fix broken default Image Styles on initial installation
+
 ## [1.5.0]
 
 ### Added

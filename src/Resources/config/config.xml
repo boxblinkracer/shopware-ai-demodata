@@ -77,7 +77,6 @@
             <name>productImageStyles</name>
             <label>Image Styles</label>
             <helpText>Select what styles you want to use for the images. These will be picked by random.</helpText>
-            <defaultValue>isolated</defaultValue>
             <options>
                 <option>
                     <id>isolated</id>

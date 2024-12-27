@@ -127,6 +127,10 @@ class ConfigService
             return [];
         }
 
+        if (!is_array($this->productImageStyles)) {
+            return [];
+        }
+
         return $this->productImageStyles;
     }
 
