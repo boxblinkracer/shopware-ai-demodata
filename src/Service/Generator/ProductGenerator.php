@@ -405,7 +405,8 @@ class ProductGenerator
     private function generateImage(string $productName, string $productDescription, array $imageStyles): string
     {
         $prompt = "Generate image for our online shop. It has to be really good and present the product in the best way possible." . PHP_EOL;
-        $prompt .= "Exactly stick to a style that matches one of these: " . implode(', ', $imageStyles) . PHP_EOL;
+        $prompt .= "Image Style: " . implode(', ', $imageStyles) . '.' . PHP_EOL;
+        $prompt .= "DO NOT ADD TEXTS!" . PHP_EOL;
         $prompt .= "Here are instructions about the product: " . $productName . ' ' . $productDescription . '.';
 
         $url = $this->openAI->generateImage($prompt, $this->imageSize);

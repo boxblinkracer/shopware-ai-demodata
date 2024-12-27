@@ -83,8 +83,8 @@
                     <name>Isolated</name>
                 </option>
                 <option>
-                    <id>transparent-background</id>
-                    <name>Transparent Background</name>
+                    <id>white-background</id>
+                    <name>White Background</name>
                 </option>
                 <option>
                     <id>detailed-close-up</id>

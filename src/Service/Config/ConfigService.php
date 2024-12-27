@@ -48,7 +48,7 @@ class ConfigService
     private $productVariantPropertyGroup;
 
     /**
-     * @var string[]
+     * @var mixed
      */
     private $productImageStyles;
 
@@ -71,9 +71,7 @@ class ConfigService
 
         $this->productVariantPropertyGroup = $configService->getString('AIDemoData.config.productVariantPropertyGroup');
 
-        /** @var string[] $tmpImageStyles */
-        $tmpImageStyles = $configService->get('AIDemoData.config.productImageStyles');
-        $this->productImageStyles = $tmpImageStyles;
+        $this->productImageStyles = $configService->get('AIDemoData.config.productImageStyles');
     }
 
     /**

@@ -5,6 +5,10 @@ using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
 ## [unreleased]
 
+### Changed
+
+- Changed transparent background to white background because these are JPG images without transparency.
+
 ### Fixed
 
 - Fix broken default configuration for text models
