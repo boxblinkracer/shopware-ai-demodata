@@ -80,6 +80,12 @@ php bin/console ai-demodata:generate:products --keywords=''
 php bin/console ai-demodata:generate:products --keywords='baseball gloves, right and left, leather, high quality' --count=2
 ```
 
+OpenAI will automatically figure out, if it makes sense to create **product variants**.
+If the product can be used as variant, then the plugin will read your configuration for the "Property for Product Variants".
+All options of this property will be used to create variants.
+I recommend using a property like "Color" or "Size" for this.
+
+
 | Feature       | Argument       | Description                                                                                                                                                       |
 |---------------|----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Keywords      | --keywords     | Specifies the keywords or topics related to the desired demo data. You can play around with these values to generate different demo data and improve your results |
