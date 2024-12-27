@@ -299,7 +299,7 @@ class ProductGenerator
             'productNumber' => $number,
             'description' => $description,
             'ean' => $ean,
-            'metaDescription' => $metaDescription,
+            'metaDescription' => substr($metaDescription, 0, 255),
             'visibilities' => [
                 [
                     'id' => $visibilityID,

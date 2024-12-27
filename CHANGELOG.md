@@ -13,6 +13,10 @@ using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
 - Support for Shopware 6.6.9.0
 
+### Fixed
+
+- Fix problems when product meta description was sometimes longer than 255 characters. This is now automatically trimmed to avoid exceptions.
+
 ## [1.4.0]
 
 ### Changed
