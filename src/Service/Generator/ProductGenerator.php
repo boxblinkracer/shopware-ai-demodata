@@ -141,7 +141,7 @@ class ProductGenerator
         $prompt .= 'Every resulting line should be in the order and sort provided below:' . PHP_EOL;
         $prompt .= PHP_EOL;
         $prompt .= 'product count.' . PHP_EOL;
-        $prompt .= 'product number code. should be 16 unique random alphanumeric.' . PHP_EOL;
+        $prompt .= 'product number code. should be 24 unique random alphanumeric.' . PHP_EOL;
         $prompt .= 'name of the product.' . PHP_EOL;
         $prompt .= 'description (about ' . $descriptionLength . ' characters).' . PHP_EOL;
         $prompt .= 'price value (no currency just number).' . PHP_EOL;

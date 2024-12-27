@@ -12,6 +12,7 @@ using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 ### Changed
 
 - Support for Shopware 6.6.9.0
+- Product Numbers are now generated with a length of 24 instead of 16 to avoid conflicts with existing products.
 
 ### Fixed
 
