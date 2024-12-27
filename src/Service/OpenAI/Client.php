@@ -40,9 +40,10 @@ class Client
 
         $this->openAi = new OpenAi($this->apiKey);
 
+        $model = 'gpt-3.5-turbo-instruct';
 
         $params = [
-            'model' => "gpt-3.5-turbo-instruct",
+            'model' => $model,
             'prompt' => $prompt,
             'temperature' => 0.3,
             'max_tokens' => 1000,
@@ -64,6 +65,8 @@ class Client
             $msg = 'OpenAI Error: ' . $json['error']['message'] . '[' . $json['error']['code'] . ']';
             throw new \Exception($msg);
         }
+
+        $this->trackTextCosts($prompt, $json, $model);
 
         if (!isset($json['choices'])) {
             throw new \Exception('No choices found in OpenAI response.');
@@ -100,12 +103,15 @@ class Client
 
         $this->openAi = new OpenAi($this->apiKey);
 
+        $model = "dall-e-3";
+
         $complete = $this->openAi->image([
-            "model" => "dall-e-3",
+            "model" => $model,
             "prompt" => $prompt,
             "n" => 1,
             "size" => $size,
             "style" => "natural",
+            "quality" => "standard",
             "response_format" => "url",
         ]);
 
@@ -120,66 +126,43 @@ class Client
             throw new \Exception($msg);
         }
 
+        if ($size === "1024x1024") {
+            OpenAIUsageTracker::getInstance()->addRequest($prompt, 0.040);
+        } else {
+            OpenAIUsageTracker::getInstance()->addRequest($prompt, 0.080);
+        }
+
         return (string)$json['data'][0]['url'];
     }
 
+
     /**
      * @param string $prompt
-     * @throws \JsonException
-     * @return Choice
+     * @param array<mixed> $json
+     * @param string $model
+     * @return void
      */
-    public function askChatGPT(string $prompt): Choice
+    private function trackTextCosts(string $prompt, array $json, string $model): void
     {
-        if (empty($this->apiKey)) {
-            throw new \Exception('No API Key found in plugin configuration. Please provide your key');
+        if (!isset($json['usage'])) {
+            OpenAIUsageTracker::getInstance()->addMissingPrices($prompt, $model);
+            return;
         }
 
-        $this->openAi = new OpenAi($this->apiKey);
+        $pricingData = json_decode((string)file_get_contents(__DIR__ . '/pricing.json'), true);
 
-        $params = [
-            'model' => "gpt-3.5-turbo-instruct",
-            'messages' => [
-                ['role' => 'user', 'content' => $prompt],
-            ],
-            'temperature' => 0.8,
-            'max_tokens' => 400,
-            'top_p' => 1.0,
-            'frequency_penalty' => 0.0,
-            'presence_penalty' => 0.0,
-        ];
-
-
-        $complete = (string)$this->openAi->chat($params);
-
-        $json = json_decode($complete, true, 512, JSON_THROW_ON_ERROR);
-
-        if (!is_array($json)) {
-            return new Choice('');
+        if (!isset($pricingData[$model])) {
+            OpenAIUsageTracker::getInstance()->addMissingPrices($prompt, $model);
         }
 
-        if (isset($json['error'])) {
-            $msg = 'OpenAI Error: ' . $json['error']['message'] . '[' . $json['error']['code'] . ']';
-            throw new \Exception($msg);
-        }
+        $costsInputToken = $pricingData[$model]['input'] ?? 0;
+        $costsOutputToken = $pricingData[$model]['output'] ?? 0;
 
-        if (!isset($json['choices'])) {
-            throw new \Exception('No choices found in OpenAI response.');
-        }
+        $totalInputTokens = $json['usage']['prompt_tokens'];
+        $totalOutputTokens = $json['usage']['completion_tokens'];
 
-        $choices = $json['choices'];
+        $costUSD = ($totalInputTokens * $costsInputToken) + ($totalOutputTokens * $costsOutputToken);
 
-        if (!is_array($choices) || count($choices) <= 0) {
-            return new Choice('');
-        }
-
-        if (!isset($choices[0]['message']['content'])) {
-            return new Choice('');
-        }
-
-        $choiceData = $choices[0];
-
-        $text = trim($choiceData['message']['content']);
-
-        return new Choice($text);
+        OpenAIUsageTracker::getInstance()->addRequest($prompt, $costUSD);
     }
 }

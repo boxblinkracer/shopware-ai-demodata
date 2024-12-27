@@ -6,6 +6,7 @@ use AIDemoData\Repository\CategoryRepository;
 use AIDemoData\Service\Config\ConfigService;
 use AIDemoData\Service\Generator\ProductGenerator;
 use AIDemoData\Service\Generator\ProductGeneratorInterface;
+use AIDemoData\Traits\CommandOutputTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,6 +16,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ProductGenerateCommand extends Command implements ProductGeneratorInterface
 {
+    use CommandOutputTrait;
+
     public static $defaultName = 'ai-demodata:generate:products';
 
     /**
@@ -150,7 +153,6 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
         $rows[] = ['Image Size', $imgSize];
 
 
-
         $table = new Table($output);
         $table->setStyle('default');
         $table->setHeaders(['Configuration', 'Value']);
@@ -177,6 +179,9 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
             $this->configService->getProductVariantPropertyGroupId(),
             $imageStyles
         );
+
+
+        $this->showOpenAIUsageData($output);
 
         if ($this->errorCount <= 0) {
             $this->io->success('Generated ' . $this->generatedCount . ' products for keywords');

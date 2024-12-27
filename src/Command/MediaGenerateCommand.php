@@ -5,6 +5,7 @@ namespace AIDemoData\Command;
 use AIDemoData\Service\Config\ConfigService;
 use AIDemoData\Service\Generator\MediaGenerator;
 use AIDemoData\Service\Generator\MediaGeneratorInterface;
+use AIDemoData\Traits\CommandOutputTrait;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -13,6 +14,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class MediaGenerateCommand extends Command implements MediaGeneratorInterface
 {
+    use CommandOutputTrait;
+
     public static $defaultName = 'ai-demodata:generate:media';
 
     /**
@@ -104,6 +107,8 @@ class MediaGenerateCommand extends Command implements MediaGeneratorInterface
         $this->io->writeln('Starting media generation...');
 
         $this->mediaGenerator->generate($keyWords, $size, $count);
+
+        $this->showOpenAIUsageData($output);
 
         if ($this->errorCount <= 0) {
             $this->io->success('Generated ' . $this->generatedCount . ' images for keywords in CMS Media folder');
