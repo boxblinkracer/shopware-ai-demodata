@@ -9,6 +9,7 @@ using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
 - Add brand new option to generate **product variants**. Configure what property group to use, and AI will automatically generate all variants, if appropriate for the product.
 - Add 2 files in the cache directory for the generated prompt and response of product generation requests.
+- Add new product image styles. Open the plugin configuration an select what styles to use for the product images.
 
 ### Changed
 

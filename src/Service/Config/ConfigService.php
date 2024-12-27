@@ -37,6 +37,11 @@ class ConfigService
      */
     private $productVariantPropertyGroup;
 
+    /**
+     * @var string[]
+     */
+    private $productImageStyles;
+
 
     /**
      * @param SystemConfigService $configService
@@ -53,6 +58,10 @@ class ConfigService
         $this->productDescriptionLength = $configService->getInt('AIDemoData.config.productDescriptionLength');
 
         $this->productVariantPropertyGroup = $configService->getString('AIDemoData.config.productVariantPropertyGroup');
+
+        /** @var string[] $tmpImageStyles */
+        $tmpImageStyles = $configService->get('AIDemoData.config.productImageStyles');
+        $this->productImageStyles = $tmpImageStyles;
     }
 
     /**
@@ -77,6 +86,18 @@ class ConfigService
     public function getProductVariantPropertyGroupId(): string
     {
         return $this->productVariantPropertyGroup;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getProductImageStyles(): array
+    {
+        if ($this->productImageStyles === null) {
+            return [];
+        }
+
+        return $this->productImageStyles;
     }
 
     /**

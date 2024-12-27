@@ -7,6 +7,7 @@ use AIDemoData\Service\Config\ConfigService;
 use AIDemoData\Service\Generator\ProductGenerator;
 use AIDemoData\Service\Generator\ProductGeneratorInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -121,27 +122,43 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
 
         # -----------------------------------------------------------------------------------------------------------------------
 
+        $rows = [];
+
         if ($category === '') {
-            $this->io->note('No category given. Products will be generated without a category.');
+            $rows[] = ['Category', '-'];
         } else {
-            $this->io->note('Products will be generated for category: ' . $category);
+            $rows[] = ['Category', $category];
         }
 
         if ($salesChannel === '') {
-            $this->io->note('No sales channel given. Products will be added the first found storefront sales channel.');
+            $rows[] = ['Sales Channel', '-'];
         } else {
-            $this->io->note('Products will be added to sales channel: ' . $salesChannel);
+            $rows[] = ['Sales Channel', $salesChannel];
         }
+
+        $rows[] = ['Description Length', $descriptionLength . ' characters'];
 
         if ($withImages) {
-            $this->io->note('Images will be generated for the products: ' . $imgSize . 'px');
+            $rows[] = ['Generate Images', 'Yes'];
         } else {
-            $this->io->note('Images will not be generated for the products.');
+            $rows[] = ['Generate Images', 'No'];
         }
 
+        $imageStyles = $this->configService->getProductImageStyles();
+        $rows[] = ['Image Styles', implode(', ', $imageStyles)];
 
-        $this->io->note('Product description length: ' . $descriptionLength . ' characters');
+        $rows[] = ['Image Size', $imgSize];
 
+
+
+        $table = new Table($output);
+        $table->setStyle('default');
+        $table->setHeaders(['Configuration', 'Value']);
+        $table->setRows($rows);
+        $table->render();
+
+        $this->io->writeln('');
+        $this->io->writeln('');
 
         # -----------------------------------------------------------------------------------------------------------------------
 
@@ -151,15 +168,14 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
 
         # -----------------------------------------------------------------------------------------------------------------------
 
-        $this->io->writeln('Starting product generation...');
-
         $this->productGenerator->generate(
             $keyWords,
             $count,
             $category,
             $salesChannel,
             $descriptionLength,
-            $this->configService->getProductVariantPropertyGroupId()
+            $this->configService->getProductVariantPropertyGroupId(),
+            $imageStyles
         );
 
         if ($this->errorCount <= 0) {
@@ -193,8 +209,6 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
      */
     public function onProductGenerated(string $number, string $name, int $count, int $maxCount): void
     {
-        $this->io->writeln('Product generated');
-
         $this->generatedCount++;
     }
 

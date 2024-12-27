@@ -37,6 +37,35 @@
             <helpText>If enabled product images will be automatically generated if no CLI argument is provided.</helpText>
         </input-field>
 
+        <input-field type="multi-select">
+            <name>productImageStyles</name>
+            <label>Image Styles</label>
+            <helpText>Select what styles you want to use for the images. These will be picked by random.</helpText>
+            <defaultValue>isolated</defaultValue>
+            <options>
+                <option>
+                    <id>isolated</id>
+                    <name>Isolated</name>
+                </option>
+                <option>
+                    <id>transparent-background</id>
+                    <name>Transparent Background</name>
+                </option>
+                <option>
+                    <id>detailed-close-up</id>
+                    <name>Detailed Close-up</name>
+                </option>
+                <option>
+                    <id>lifestyle-context</id>
+                    <name>Lifestyle Context</name>
+                </option>
+                <option>
+                    <id>luxury</id>
+                    <name>Luxury</name>
+                </option>
+            </options>
+        </input-field>
+
         <input-field type="single-select">
             <name>productImageSize</name>
             <label>Image Size (px)</label>
@@ -73,12 +102,12 @@
                     <name>1024x1024</name>
                 </option>
                 <option>
-                    <id>256x256</id>
-                    <name>256x256</name>
+                    <id>1792x1024</id>
+                    <name>1792x1024</name>
                 </option>
                 <option>
-                    <id>512x512</id>
-                    <name>512x512</name>
+                    <id>1024x1792</id>
+                    <name>1024x1792</name>
                 </option>
             </options>
         </input-field>
