@@ -56,6 +56,15 @@ You can also provide your API key using a CLI command of Shopware:
 php bin/console system:config:set AIDemoData.config.apiKey 123
 ```
 
+There are various things that you can configure in the plugin, such as the used text and image models, styles of images
+and way more.
+
+Some of these settings can also be adjusted directly when running the CLI commands.
+
+<p align="center">
+   <img src="/.github/assets/configuration.png">
+</p>
+
 ## Usage
 
 Once the plugin is activated and configured with your OpenAI API key, you can use the command-line interface (CLI) to generate demo data.
