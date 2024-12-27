@@ -13,7 +13,7 @@
         <input-field type="single-select">
             <name>apiTextModel</name>
             <label>Text Model</label>
-            <defaultValue>gpt-3.5-turbo-instruct</defaultValue>
+            <defaultValue>gpt-3.5-turbo</defaultValue>
             <options>
                 <option>
                     <id>gpt-4</id>
