@@ -17,7 +17,7 @@ jobs:
     name: Install Dev Dependencies
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         # -----------------------------------
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -25,7 +25,7 @@ jobs:
           php-version: 8.1
         # -----------------------------------
       - name: Mount Dev Dependency Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: cache-dev-dependencies-${{ github.run_id }}
           path: |
@@ -41,7 +41,7 @@ jobs:
     needs: install_dev
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         # -----------------------------------
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -57,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -65,7 +65,7 @@ jobs:
           php-version: 8.1
 
       - name: Mount Dev Dependency Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: cache-dev-dependencies-${{ github.run_id }}
           path: |
@@ -80,7 +80,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -88,7 +88,7 @@ jobs:
           php-version: 8.1
 
       - name: Mount Dev Dependency Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: cache-dev-dependencies-${{ github.run_id }}
           path: |
@@ -103,7 +103,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -111,7 +111,7 @@ jobs:
           php-version: 8.1
 
       - name: Mount Dev Dependency Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           key: cache-dev-dependencies-${{ github.run_id }}
           path: |
@@ -129,7 +129,7 @@ jobs:
     steps:
 
       - name: Clone Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Build ZIP File
         run: |
@@ -141,7 +141,7 @@ jobs:
           unzip ./.build/AIDemoData.zip -d ./.build/extension
 
       - name: Store ZIP file in Github
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: AIDemoData
           retention-days: 4
@@ -160,7 +160,7 @@ jobs:
     needs: [ build ]
     steps:
       # -----------------------------------
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         # -----------------------------------
       - name: Invoke Packagist Webhook
         run: |
