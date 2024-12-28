@@ -33,7 +33,7 @@
         <input-field type="single-select">
             <name>apiImageModel</name>
             <label>Image Model</label>
-            <defaultValue>dall-e-3</defaultValue>
+            <defaultValue>dall-e-2</defaultValue>
             <options>
                 <option>
                     <id>dall-e-3</id>
