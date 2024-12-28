@@ -5,6 +5,10 @@ using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
 ## [unreleased]
 
+### Added
+
+- Add new **batch size of 15** products to speed up initial requests to OpenAI. It takes a lot of time to generate huge amounts of product data.
+
 ### Changed
 
 - Changed transparent background to white background because these are JPG images without transparency.

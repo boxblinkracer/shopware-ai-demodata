@@ -2,7 +2,6 @@
 
 namespace AIDemoData\Command;
 
-use AIDemoData\Repository\CategoryRepository;
 use AIDemoData\Service\Config\ConfigService;
 use AIDemoData\Service\Generator\ProductGenerator;
 use AIDemoData\Service\Generator\ProductGeneratorInterface;
@@ -174,16 +173,23 @@ class ProductGenerateCommand extends Command implements ProductGeneratorInterfac
 
         # -----------------------------------------------------------------------------------------------------------------------
 
-        $this->productGenerator->generate(
-            $keyWords,
-            $count,
-            $category,
-            $salesChannel,
-            $descriptionLength,
-            $this->configService->getProductVariantPropertyGroupId(),
-            $imageStyles
-        );
+        $batchSize = 15;
 
+        $this->io->note('Using Batch Size: ' . $batchSize . ' products per process');
+
+        for ($i = 0; $i < ceil($count / $batchSize); $i++) {
+            $currentBatchSize = min($batchSize, $count - ($i * $batchSize));
+
+            $this->productGenerator->generate(
+                $keyWords,
+                $currentBatchSize,
+                $category,
+                $salesChannel,
+                $descriptionLength,
+                $this->configService->getProductVariantPropertyGroupId(),
+                $imageStyles
+            );
+        }
 
         $this->showOpenAIUsageData($output);
 
