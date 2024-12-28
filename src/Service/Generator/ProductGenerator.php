@@ -187,8 +187,8 @@ class ProductGenerator
             try {
                 $parts = explode(';', $line);
 
-                if (count($parts) < 4) {
-                    continue;
+                if (count($parts) < 7) {
+                    throw new \Exception('Product row is not complete');
                 }
 
                 $currentCount++;

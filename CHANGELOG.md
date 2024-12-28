@@ -12,6 +12,7 @@ using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 ### Changed
 
 - Changed transparent background to white background because these are JPG images without transparency.
+- Improved handling of products that do not have the full data. These will be skipped with a better exception.
 
 ### Fixed
 
